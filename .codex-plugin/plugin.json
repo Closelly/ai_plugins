@@ -1,6 +1,6 @@
 {
   "name": "closelly-ai-plugins",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Fuente única, versionada y portable de plugins y skills de Closelly compatible con ChatGPT/Codex, Claude Code y GitHub Copilot CLI.",
   "author": {
     "name": "Closelly Edutech SpA",

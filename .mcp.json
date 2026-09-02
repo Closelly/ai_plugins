@@ -1,0 +1,23 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "closelly-business": {
+      "type": "http",
+      "url": "https://auth.closelly.com/mcp/business",
+      "auth": {
+        "type": "oauth",
+        "login": "https://auth.closelly.com/oauth/login",
+        "protectedResourceMetadata": "https://auth.closelly.com/.well-known/oauth-protected-resource/mcp/business",
+        "authorizationServerMetadata": "https://auth.closelly.com/.well-known/oauth-authorization-server/mcp/business"
+      },
+      "audience": "client-tenant",
+      "skill": "mcp-business",
+      "notes": [
+        "Claude Code: OAuth de User al primer uso de tools. No uses InternalCredential.",
+        "El tenant sale del token; no pases business_id de otro negocio.",
+        "Requiere business.mcp_enabled = true.",
+        "Este archivo es para Claude Code. ChatGPT/Codex no debe tratarlo como App; .app.json sigue pendiente."
+      ]
+    }
+  }
+}

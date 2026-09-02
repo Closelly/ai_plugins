@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "closelly-ai-plugins",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Fuente única, versionada y portable de plugins y skills de Closelly compatible con ChatGPT/Codex, Claude Code y GitHub Copilot CLI.",
   "author": {
     "name": "Closelly Edutech SpA",
@@ -21,11 +21,19 @@
   ],
   "extensions": {
     "com.closelly.mcp": {
+      "business": {
+        "name": "closelly-business",
+        "url": "https://auth.closelly.com/mcp/business",
+        "transport": "http",
+        "auth": "oauth",
+        "skill": "mcp-business",
+        "config": "./config/mcp.business.json"
+      },
       "remote": {
         "enabled": false,
-        "status": "prepared-not-activated",
-        "reason": "Endpoint y autenticación pendientes de definición.",
-        "exampleConfig": "./config/mcp.remote.example.json"
+        "status": "documented-oauth-not-auto-activated",
+        "reason": "MCP Business está documentado con OAuth; no se auto-activa mcp.json para exigir consentimiento del usuario.",
+        "exampleConfig": "./config/mcp.business.json"
       }
     }
   }

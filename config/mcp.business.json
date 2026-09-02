@@ -9,7 +9,14 @@
         "login": "https://auth.closelly.com/oauth/login",
         "protectedResourceMetadata": "https://auth.closelly.com/.well-known/oauth-protected-resource/mcp/business",
         "authorizationServerMetadata": "https://auth.closelly.com/.well-known/oauth-authorization-server/mcp/business"
-      }
+      },
+      "audience": "client-tenant",
+      "skill": "mcp-business",
+      "notes": [
+        "OAuth de User (email + password). No uses InternalCredential.",
+        "El tenant sale del token; no pases business_id de otro negocio.",
+        "Requiere business.mcp_enabled = true."
+      ]
     }
   }
 }

@@ -1,11 +1,13 @@
-# Closelly AI Plugins
+# Closelly MCP App
 
-Fuente única, versionada y portable de plugins y skills de Closelly para **ChatGPT/Codex**, **Claude Code** y **GitHub Copilot CLI**.
+Fuente única, versionada y portable de **Closelly MCP App** para **ChatGPT/Codex**, **Claude Code** y **GitHub Copilot CLI**.
 
 | Campo | Valor |
 | --- | --- |
+| Nombre visible | Closelly MCP App |
 | Identificador | `closelly-ai-plugins` |
-| Versión | `1.4.0` |
+| Versión | `1.5.0` |
+| Comandos | `/closelly`, `/LENA` |
 | Skills | `skills/` (markdown + YAML de UI ChatGPT) |
 | Config | `plugin.json`, `config/*.json`, `.mcp.json` (Claude Code) |
 | MCP Business | `https://auth.closelly.com/mcp/business` (OAuth) |
@@ -26,17 +28,20 @@ claude plugin install closelly-ai-plugins@closelly-ai-plugins
 copilot plugin install Closelly/ai_plugins
 ```
 
+Tras instalar, usa **`/closelly`** o **`/LENA`**.
+
 Guías: [ChatGPT/Codex](docs/chatgpt-codex.md), [Claude Code](docs/claude-code.md), [Copilot CLI](docs/github-copilot-cli.md).
 
 ## MCP Business
 
-La skill `mcp-business` da contexto sobre el MCP de clientes:
+Closelly MCP App da contexto sobre el MCP de clientes:
 
 - URL: `https://auth.closelly.com/mcp/business`
 - Auth: OAuth de User (email + password)
+- Comandos: `/closelly`, `/LENA` (`commands/`)
 - Config portable: `config/mcp.business.json`
 - Claude Code: `.mcp.json` en la raíz (OAuth al primer uso de tools)
-- ChatGPT UI: `skills/mcp-business/agents/openai.yaml`
+- ChatGPT UI: `skills/mcp-business/agents/openai.yaml` (nombre Closelly MCP App)
 - ChatGPT App (`.app.json`): **pendiente** hasta tener `connector_…`
 - Playbook: `skills/mcp-business/SKILL.md`
 

@@ -49,7 +49,7 @@ Claude Code lee **`.mcp.json`** en la raíz del plugin (mismo payload que `confi
 
 Tras instalar el plugin, el primer uso de una tool MCP dispara el flujo OAuth. Requiere `business.mcp_enabled = true`. El tenant sale del token.
 
-La skill `mcp-business` describe tools, scopes y el flujo single-tenant.
+La UI del plugin es **Closelly MCP App**. Comandos: **`/closelly`** y **`/LENA`** (`commands/`). El playbook de tools sigue en `skills/mcp-business/SKILL.md`.
 
 ## Claude.ai / Cowork
 

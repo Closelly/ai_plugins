@@ -2,6 +2,13 @@
 
 El versionado sigue [Semantic Versioning](https://semver.org/).
 
+## 1.5.0 - 2026-09-02
+
+### Changed
+
+- Nombre visible del plugin: **Closelly MCP App** (deja de usarse "Closelly Business" / "Closelly AI Plugins" en la UI).
+- Comandos de invocación: **`/closelly`** y **`/LENA`** (`commands/closelly.md`, `commands/LENA.md`).
+
 ## 1.4.0 - 2026-09-02
 
 ### Added

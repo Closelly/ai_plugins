@@ -61,7 +61,7 @@ PLACEHOLDER_HINTS = (
     "${",
     "pending",
 )
-ABSOLUTE_PATH_RE = re.compile(r"(^|[\s\"'])(/?(?:Users|home|opt|var|etc)/[^\s\"']+|file:///[\s\"']+|[A-Za-z]:\\[^\s\"']+)")
+ABSOLUTE_PATH_RE = re.compile(r"(^|[\s\"'])(/?(?:Users|home|opt|var|etc)/[^\s\"']+|file:///[^^\s\"']+|[A-Za-z]:\\[^\s\"']+)")
 
 
 class ValidationError(Exception):
@@ -209,3 +209,222 @@ def check_identity_sync(root: Path, errors: list[str]) -> dict[str, str]:
                 errors.append("Marketplace Codex requiere category")
 
     return {"name": name, "version": version, "description": description}
+
+
+def check_codex_paths(root: Path, errors: list[str]) -> None:
+    payload = load_json(root / ".codex-plugin/plugin.json")
+    if not isinstance(payload, dict):
+        return
+    skills = payload.get("skills")
+    if skills != "./skills/":
+        errors.append('.codex-plugin/plugin.json skills debe ser "./skills/"')
+    for key in ("skills", "mcpServers", "hooks", "apps"):
+        value = payload.get(key)
+        if isinstance(value, str) and not value.startswith("./"):
+            errors.append(f".codex-plugin/plugin.json {key} debe ser una ruta relativa que empiece por ./")
+
+
+def check_skills(root: Path, identity: dict[str, str], errors: list[str]) -> None:
+    skills_root = root / "skills"
+    if not skills_root.is_dir():
+        errors.append("Falta el directorio físico skills/")
+        return
+
+    skill_dirs = [path for path in skills_root.iterdir() if path.is_dir()]
+    if not skill_dirs:
+        errors.append("skills/ no contiene ninguna skill")
+
+    diagnose = skills_root / "diagnose-plugin"
+    if not (diagnose / "SKILL.md").is_file():
+        errors.append("Falta skills/diagnose-plugin/SKILL.md")
+        return
+
+    text = (diagnose / "SKILL.md").read_text(encoding="utf-8")
+    try:
+        frontmatter = parse_frontmatter(text)
+    except ValidationError as exc:
+        errors.append(str(exc))
+        return
+
+    name = frontmatter.get("name", "")
+    description = frontmatter.get("description", "")
+    if name != "diagnose-plugin":
+        errors.append(f"Frontmatter name debe coincidir con el directorio diagnose-plugin, recibido {name!r}")
+    if not SKILL_NAME_RE.match(name):
+        errors.append(f"Frontmatter name inválido: {name!r}")
+    if not description or len(description) > 1024:
+        errors.append("Frontmatter description ausente o demasiado largo")
+    if frontmatter.get("metadata.plugin_name") != identity.get("name"):
+        errors.append("metadata.plugin_name de la skill no coincide con el identificador del plugin")
+    if frontmatter.get("metadata.plugin_version") != identity.get("version"):
+        errors.append("metadata.plugin_version de la skill no coincide con la versión del plugin")
+
+    for skill_dir in skill_dirs:
+        skill_file = skill_dir / "SKILL.md"
+        if not skill_file.is_file():
+            errors.append(f"{skill_dir.relative_to(root)} no contiene SKILL.md")
+            continue
+        try:
+            fm = parse_frontmatter(skill_file.read_text(encoding="utf-8"))
+        except ValidationError as exc:
+            errors.append(f"{skill_file.relative_to(root)}: {exc}")
+            continue
+        if fm.get("name") != skill_dir.name:
+            errors.append(f"{skill_file.relative_to(root)} name={fm.get('name')!r} no coincide con {skill_dir.name}")
+
+    nested = list(skills_root.glob("*/*/SKILL.md"))
+    if nested:
+        errors.append("No se permiten skills anidadas más allá de skills/<nombre>/SKILL.md")
+
+
+def check_single_physical_skills_dir(root: Path, errors: list[str]) -> None:
+    extra_skill_roots = []
+    for candidate in (
+        root / ".codex-plugin" / "skills",
+        root / ".claude-plugin" / "skills",
+        root / ".agents" / "skills",
+        root / "chatgpt" / "skills",
+        root / "claude" / "skills",
+        root / "copilot" / "skills",
+    ):
+        if candidate.exists():
+            extra_skill_roots.append(str(candidate.relative_to(root)))
+    if extra_skill_roots:
+        errors.append(f"Skills duplicadas fuera de skills/: {extra_skill_roots}")
+
+
+def check_symlinks(root: Path, errors: list[str]) -> None:
+    for path in iter_files(root):
+        if path.is_symlink():
+            errors.append(f"Enlace simbólico prohibido: {path.relative_to(root)}")
+    for dirpath, dirnames, _filenames in os.walk(root):
+        dirnames[:] = [name for name in dirnames if name not in SKIP_SCAN_DIRS]
+        for name in dirnames:
+            candidate = Path(dirpath) / name
+            if candidate.is_symlink():
+                errors.append(f"Enlace simbólico prohibido: {candidate.relative_to(root)}")
+
+
+def check_absolute_paths(root: Path, errors: list[str]) -> None:
+    for relative in (
+        "plugin.json",
+        ".codex-plugin/plugin.json",
+        ".claude-plugin/plugin.json",
+        ".claude-plugin/marketplace.json",
+        ".agents/plugins/marketplace.json",
+        "config/mcp.remote.example.json",
+    ):
+        path = root / relative
+        if not path.is_file():
+            continue
+        text = path.read_text(encoding="utf-8")
+        if ABSOLUTE_PATH_RE.search(text) or "file://" in text:
+            errors.append(f"{relative} contiene rutas absolutas")
+        payload = load_json(path)
+        blob = json.dumps(payload)
+        if ".." in blob:
+            errors.append(f"{relative} contiene recorridos de ruta '..'")
+
+
+def check_secrets(root: Path, errors: list[str]) -> None:
+    for path in iter_files(root):
+        if path.suffix.lower() not in TEXT_SUFFIXES and path.name not in {"LICENSE"}:
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            errors.append(f"Archivo binario inesperado: {path.relative_to(root)}")
+            continue
+        lowered = text.lower()
+        for label, pattern in SECRET_PATTERNS:
+            for match in pattern.finditer(text):
+                snippet = match.group(0)
+                window = lowered[max(0, match.start() - 40) : match.end() + 40]
+                if any(hint in window for hint in PLACEHOLDER_HINTS):
+                    continue
+                errors.append(f"Posible secreto ({label}) en {path.relative_to(root)}: {snippet[:12]}…")
+
+
+def check_mcp_inactive(root: Path, errors: list[str]) -> None:
+    for relative in FORBIDDEN_ACTIVE_MCP:
+        if (root / relative).exists():
+            errors.append(f"MCP remoto no debe activarse: elimina {relative} hasta definir endpoint y autenticación")
+    payload = load_json(root / "plugin.json")
+    remote = {}
+    if isinstance(payload, dict):
+        extensions = payload.get("extensions")
+        if isinstance(extensions, dict):
+            block = extensions.get("com.closelly.mcp")
+            if isinstance(block, dict):
+                remote = block.get("remote") if isinstance(block.get("remote"), dict) else {}
+    if remote.get("enabled") is True:
+        errors.append("extensions.com.closelly.mcp.remote.enabled debe ser false")
+    example = root / "config/mcp.remote.example.json"
+    if not example.is_file():
+        errors.append("Falta config/mcp.remote.example.json para preparar MCP remoto desactivado")
+    else:
+        data = load_json(example)
+        if not isinstance(data, dict) or "mcpServers" not in data:
+            errors.append("config/mcp.remote.example.json debe declarar mcpServers de ejemplo")
+
+    codex = load_json(root / ".codex-plugin/plugin.json")
+    if isinstance(codex, dict):
+        for key in ("mcpServers", "apps"):
+            if key in codex:
+                errors.append(f".codex-plugin/plugin.json no debe activar {key} todavía")
+
+
+def check_dependencies(root: Path, errors: list[str]) -> None:
+    claude = load_json(root / ".claude-plugin/plugin.json")
+    if isinstance(claude, dict) and claude.get("dependencies"):
+        errors.append("No declares dependencias de otros plugins hasta que existan paquetes versionados")
+    package_json = root / "package.json"
+    if package_json.is_file():
+        errors.append("No empaquetes package.json de runtime; este plugin es de manifiestos y skills")
+
+
+def check_compatibility(root: Path, errors: list[str]) -> None:
+    if not KEBAB_RE.match(PLUGIN_NAME):
+        errors.append("El identificador del plugin debe ser kebab-case")
+    diagnose = root / "skills/diagnose-plugin/scripts/diagnose.py"
+    if diagnose.is_file() and "plugin.name=" not in diagnose.read_text(encoding="utf-8"):
+        errors.append("El script de diagnóstico debe emitir plugin.name=")
+
+
+def validate(root: Path) -> list[str]:
+    errors: list[str] = []
+    check_required_files(root, errors)
+    identity: dict[str, str] = {}
+    try:
+        identity = check_identity_sync(root, errors)
+        check_codex_paths(root, errors)
+        check_skills(root, identity, errors)
+        check_single_physical_skills_dir(root, errors)
+        check_symlinks(root, errors)
+        check_absolute_paths(root, errors)
+        check_secrets(root, errors)
+        check_mcp_inactive(root, errors)
+        check_dependencies(root, errors)
+        check_compatibility(root, errors)
+    except ValidationError as exc:
+        errors.append(str(exc))
+    return errors
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Valida el plugin portable Closelly")
+    parser.add_argument("--root", type=Path, default=None)
+    args = parser.parse_args(argv)
+    root = (args.root or repo_root_from()).resolve()
+    errors = validate(root)
+    if errors:
+        sys.stderr.write("Validación fallida:\n")
+        for error in errors:
+            sys.stderr.write(f"- {error}\n")
+        return 1
+    sys.stdout.write(f"OK {root}\n")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

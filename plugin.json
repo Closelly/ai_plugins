@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "closelly-ai-plugins",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Fuente única, versionada y portable de plugins y skills de Closelly compatible con ChatGPT/Codex, Claude Code y GitHub Copilot CLI.",
   "author": {
     "name": "Closelly Edutech SpA",

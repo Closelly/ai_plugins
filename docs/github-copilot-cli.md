@@ -36,13 +36,7 @@ copilot plugin marketplace remove closelly-ai-plugins
 
 ## ZIP de release
 
-El artefacto `closelly-ai-plugins-github-copilot-cli-<version>.zip` contiene `plugin.json` y `skills/`. Instálalo desde una ruta local:
-
-```bash
-copilot plugin install ./closelly-ai-plugins-github-copilot-cli-<version>
-```
-
-tras descomprimir y verificar el checksum SHA-256.
+La release publica un archivo: `closelly-ai-plugins-<version>.zip`.
 
 ## Diagnóstico
 

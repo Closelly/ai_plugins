@@ -4,7 +4,7 @@ description: Playbook del MCP Business de Closelly (/mcp/business). Tools single
 license: MIT
 metadata:
   plugin_name: closelly-ai-plugins
-  plugin_version: "1.1.0"
+  plugin_version: "1.2.0"
   mcp_server: closelly-business
   mcp_url: https://auth.closelly.com/mcp/business
 ---

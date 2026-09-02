@@ -36,7 +36,7 @@ Quita también el plugin de `~/.codex/config.toml` si quedó habilitado.
 
 ## ZIP de release
 
-El artefacto `closelly-ai-plugins-chatgpt-codex-<version>.zip` incluye `.codex-plugin/plugin.json`, `plugin.json` y `skills/`. Verifica el SHA-256 publicado en `SHA256SUMS` antes de usarlo.
+La release publica un archivo: `closelly-ai-plugins-<version>.zip`.
 
 ## Diagnóstico
 

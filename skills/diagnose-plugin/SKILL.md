@@ -1,46 +1,39 @@
 ---
 name: diagnose-plugin
-description: Informa el nombre y la versión del plugin Closelly de forma equivalente en ChatGPT/Codex, Claude Code y GitHub Copilot CLI. Úsalo para diagnosticar la instalación, comprobar identidad sincronizada y verificar que MCP Business no está auto-activado.
+description: Informa el nombre y la versión del plugin Closelly leyendo los manifiestos JSON. Úsalo para identificar la instalación en ChatGPT/Codex, Claude Code y GitHub Copilot CLI.
 license: MIT
 metadata:
   plugin_name: closelly-ai-plugins
-  plugin_version: "1.1.0"
+  plugin_version: "1.2.0"
 ---
 
 # Diagnóstico del plugin Closelly
 
-Informa **el mismo nombre y la misma versión** en ChatGPT/Codex, Claude Code y GitHub Copilot CLI. No improvises metadatos: léelos de los manifiestos empaquetados.
+Lee los manifiestos JSON y reporta **el mismo nombre y la misma versión**. No ejecutes comandos ni scripts.
 
-## Cuándo usarla
+## Manifiestos
 
-- El usuario pide diagnosticar, verificar o identificar este plugin.
-- Hay que confirmar que la instalación cargó `closelly-ai-plugins`.
-- Hay que comparar la identidad entre hosts.
+En la raíz del plugin (o `${CLAUDE_PLUGIN_ROOT}` / `${PLUGIN_ROOT}`):
 
-## Procedimiento
+- `plugin.json`
+- `.codex-plugin/plugin.json`
+- `.claude-plugin/plugin.json`
 
-1. Localiza la raíz del plugin. Prueba en este orden:
-   - `${CLAUDE_PLUGIN_ROOT}`
-   - `${PLUGIN_ROOT}`
-   - el directorio padre de `skills/` (dos niveles por encima de este `SKILL.md`)
-2. Ejecuta el script portable, si el entorno permite comandos:
+Extrae `name`, `version` y `description` de cada archivo que exista.
 
-   ```bash
-   python3 "${PLUGIN_ROOT}/skills/diagnose-plugin/scripts/diagnose.py"
-   ```
+## Informe
 
-   Si `PLUGIN_ROOT` no está definido, usa `CLAUDE_PLUGIN_ROOT` o la raíz detectada.
-3. Si no puedes ejecutar el script, lee estos JSON en la raíz detectada (el primero que exista para cada host) y extrae `name` y `version`:
-   - `plugin.json`
-   - `.codex-plugin/plugin.json`
-   - `.claude-plugin/plugin.json`
-4. Responde **exactamente** con el bloque de informe descrito en [references/output-format.md](references/output-format.md). Los campos `plugin.name` y `plugin.version` deben coincidir en los tres hosts.
-5. Si algún manifiesto difiere, marca `identity.consistent=false` y lista las diferencias. No “corrijas” el informe inventando un valor.
-6. No auto-actives MCP. El diagnóstico debe reportar `mcp.remote.enabled=false` mientras no existan `mcp.json` / `.mcp.json` / `.app.json`. El connector documentado es MCP Business (`config/mcp.business.json`); el usuario lo conecta con OAuth.
+Responde en texto plano, una clave por línea:
 
-## Identidad canónica
+```
+plugin.name=closelly-ai-plugins
+plugin.version=1.2.0
+plugin.description=<description del manifiesto>
+host=<chatgpt-codex|claude-code|github-copilot-cli|unknown>
+identity.consistent=<true si name/version/description coinciden>
+mcp.remote.enabled=false
+```
 
-- `plugin.name`: `closelly-ai-plugins`
-- `plugin.version`: `1.1.0`
+`host` puede cambiar según el cliente; nombre y versión no. Si un manifiesto difiere, `identity.consistent=false`. No inventes valores.
 
-Esos valores deben coincidir con `plugin.json` en la raíz y con los manifiestos de cada host.
+`mcp.remote.enabled` es `false` salvo que existan `mcp.json`, `.mcp.json` o `.app.json`. El connector Business se documenta en `config/mcp.business.json` y se conecta con OAuth, no con este skill.

@@ -18,7 +18,6 @@ Prueba local:
 
 ```bash
 claude --plugin-dir .
-claude plugin validate . --strict
 ```
 
 ## Actualizar
@@ -39,13 +38,7 @@ claude plugin marketplace remove closelly-ai-plugins
 
 ## ZIP de release
 
-El artefacto `closelly-ai-plugins-claude-code-<version>.zip` se puede cargar con:
-
-```bash
-claude --plugin-dir closelly-ai-plugins-claude-code-<version>.zip
-```
-
-o `--plugin-url` apuntando a la URL de GitHub Releases. Valida el SHA-256 de `SHA256SUMS`.
+La release publica un archivo: `closelly-ai-plugins-<version>.zip`.
 
 ## Diagnóstico
 

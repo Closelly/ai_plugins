@@ -2,6 +2,14 @@
 
 El versionado sigue [Semantic Versioning](https://semver.org/).
 
+## 1.2.0 - 2026-09-02
+
+### Changed
+
+- El paquete queda solo con markdown y JSON (sin scripts, tests ni workflow de validación).
+- El release de GitHub Actions genera un único `closelly-ai-plugins-<version>.zip`.
+- `diagnose-plugin` solo lee manifiestos JSON; no ejecuta comandos.
+
 ## 1.1.0 - 2026-09-02
 
 ### Added
@@ -20,7 +28,6 @@ El versionado sigue [Semantic Versioning](https://semver.org/).
 
 - Identidad portable `closelly-ai-plugins` sincronizada en `plugin.json`, `.codex-plugin/plugin.json` y `.claude-plugin/plugin.json`.
 - Catálogos `.agents/plugins/marketplace.json` y `.claude-plugin/marketplace.json`.
-- Skill compartida `diagnose-plugin` con informe equivalente de nombre y versión.
-- Validación continua de JSON, frontmatter, rutas, metadatos, secretos, dependencias y compatibilidad.
-- Releases SemVer con ZIP por host y checksums SHA-256.
+- Skill compartida `diagnose-plugin`.
+- Releases SemVer.
 - Plantilla de MCP remoto desactivada.

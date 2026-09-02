@@ -166,7 +166,7 @@ Detalle de estructura: [references/tools-reference.md](references/tools-referenc
 | `list_surveys` | Encuestas del business + participación | `surveys[]` con `assigned`, `started`, `completed` |
 | `get_survey_summary` | Definición y participación de una encuesta | `questions[]`, `response_rate` (sin respuestas abiertas individuales) |
 | `list_challenges` | Desafíos y participación | `challenges[]` con estados y conteos |
-| `get_challenge_summary` | Detalle de un desafío por participante | `participantes[]` (PII opcional), `states`, `reward` |
+| `get_challenge_summary` | Detalle de un desafío por participante | `participants[]` (PII opcional), `states`, `reward` |
 | `list_campaigns` | Campañas con misiones/equipos | `campaigns[]` con conteos |
 | `get_campaign_summary` | Resumen de campaña | `teams[]`, `missions[]`, puntos y posiciones |
 | `get_campaign_ranking` | Ranking de equipos (e individual) | `teams[]`; `individual[]` con `include_individual: true` |

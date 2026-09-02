@@ -40,14 +40,6 @@ claude plugin marketplace remove closelly-ai-plugins
 
 La release publica un archivo: `closelly-ai-plugins-<version>.zip`.
 
-## Diagnóstico
-
-```
-/closelly-ai-plugins:diagnose-plugin
-```
-
-El informe debe mostrar el mismo `plugin.name` y `plugin.version` que en Codex y Copilot CLI.
-
 ## MCP Business
 
 Añade el connector `https://auth.closelly.com/mcp/business` (OAuth de User). La skill `mcp-business` describe tools, scopes y el flujo single-tenant.

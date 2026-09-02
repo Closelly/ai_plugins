@@ -7,7 +7,7 @@ Este repositorio es la fuente única del plugin `closelly-ai-plugins`. El mismo 
 | Campo | Valor |
 | --- | --- |
 | Identificador | `closelly-ai-plugins` |
-| Versión | `1.2.0` |
+| Versión | `1.3.0` |
 | MCP Business | `https://auth.closelly.com/mcp/business` (OAuth, skill `mcp-business`) |
 
 Alinea `name`, `version` y `description` en `plugin.json`, `.codex-plugin/plugin.json`, `.claude-plugin/plugin.json` y el marketplace Claude.
@@ -22,7 +22,6 @@ Alinea `name`, `version` y `description` en `plugin.json`, `.codex-plugin/plugin
 ├── .claude-plugin/marketplace.json
 ├── .agents/plugins/marketplace.json
 ├── skills/
-│   ├── diagnose-plugin/SKILL.md
 │   └── mcp-business/
 └── config/mcp.business.json
 ```

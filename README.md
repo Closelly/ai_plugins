@@ -5,7 +5,7 @@ Fuente única, versionada y portable de plugins y skills de Closelly para **Chat
 | Campo | Valor |
 | --- | --- |
 | Identificador | `closelly-ai-plugins` |
-| Versión | `1.2.0` |
+| Versión | `1.3.0` |
 | Skills | `skills/` (markdown) |
 | Config | `plugin.json`, `config/*.json` |
 | MCP Business | `https://auth.closelly.com/mcp/business` (OAuth; no auto-activado) |

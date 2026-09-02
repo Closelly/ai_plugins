@@ -102,7 +102,7 @@ class DiagnoseTests(unittest.TestCase):
     def test_report_from_full_repo(self) -> None:
         report = diagnose_mod.build_report(ROOT)
         self.assertIn("plugin.name=closelly-ai-plugins", report)
-        self.assertIn("plugin.version=1.0.0", report)
+        self.assertIn("plugin.version=1.1.0", report)
         self.assertIn("identity.consistent=true", report)
         self.assertIn("mcp.remote.enabled=false", report)
 
@@ -146,7 +146,7 @@ class DiagnoseTests(unittest.TestCase):
             else:
                 os.environ["CLAUDE_PLUGIN_ROOT"] = original
         self.assertIn("plugin.name=closelly-ai-plugins", report)
-        self.assertIn("plugin.version=1.0.0", report)
+        self.assertIn("plugin.version=1.1.0", report)
         self.assertIn("host=claude-code", report)
 
 
@@ -159,14 +159,17 @@ class PackageTests(unittest.TestCase):
             self.assertEqual(len(zips), 3)
             self.assertTrue((tmp / "SHA256SUMS").is_file())
             names = {path.name for path in zips}
-            self.assertIn("closelly-ai-plugins-chatgpt-codex-1.0.0.zip", names)
-            self.assertIn("closelly-ai-plugins-claude-code-1.0.0.zip", names)
-            self.assertIn("closelly-ai-plugins-github-copilot-cli-1.0.0.zip", names)
+            self.assertIn("closelly-ai-plugins-chatgpt-codex-1.1.0.zip", names)
+            self.assertIn("closelly-ai-plugins-claude-code-1.1.0.zip", names)
+            self.assertIn("closelly-ai-plugins-github-copilot-cli-1.1.0.zip", names)
             import zipfile
 
             for zip_path in zips:
                 with zipfile.ZipFile(zip_path) as zf:
                     self.assertIn("skills/diagnose-plugin/SKILL.md", zf.namelist())
+                    self.assertIn("skills/mcp-business/SKILL.md", zf.namelist())
+                    self.assertIn("skills/mcp-business/references/tools-reference.md", zf.namelist())
+                    self.assertIn("config/mcp.business.json", zf.namelist())
                     self.assertNotIn("mcp.json", zf.namelist())
                     self.assertNotIn(".mcp.json", zf.namelist())
                     self.assertFalse(any("__pycache__" in name or name.endswith(".pyc") for name in zf.namelist()))
@@ -186,6 +189,29 @@ class PackageTests(unittest.TestCase):
 
 def stat_is_symlink(external_attr: int) -> bool:
     return ((external_attr >> 16) & 0o170000) == 0o120000
+
+
+class McpBusinessTests(unittest.TestCase):
+    def test_skill_documents_core_tools_and_oauth_url(self) -> None:
+        skill = (ROOT / "skills" / "mcp-business" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("name: mcp-business", skill)
+        self.assertIn("https://auth.closelly.com/mcp/business", skill)
+        for tool in ("get_business", "list_courses", "search_students", "export_course_progress"):
+            self.assertIn(f"`{tool}`", skill)
+
+    def test_connector_config_is_oauth_without_secrets(self) -> None:
+        payload = json.loads((ROOT / "config" / "mcp.business.json").read_text(encoding="utf-8"))
+        server = payload["mcpServers"]["closelly-business"]
+        self.assertEqual(server["url"], "https://auth.closelly.com/mcp/business")
+        self.assertEqual(server["auth"]["type"], "oauth")
+        self.assertNotIn("headers", server)
+        blob = json.dumps(payload)
+        self.assertNotIn("Bearer ", blob)
+        plugin = json.loads((ROOT / "plugin.json").read_text(encoding="utf-8"))
+        business = plugin["extensions"]["com.closelly.mcp"]["business"]
+        self.assertEqual(business["url"], server["url"])
+        self.assertEqual(business["skill"], "mcp-business")
+        self.assertIs(plugin["extensions"]["com.closelly.mcp"]["remote"]["enabled"], False)
 
 
 if __name__ == "__main__":

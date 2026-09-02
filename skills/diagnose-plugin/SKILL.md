@@ -1,10 +1,10 @@
 ---
 name: diagnose-plugin
-description: Informa el nombre y la versión del plugin Closelly de forma equivalente en ChatGPT/Codex, Claude Code y GitHub Copilot CLI. Úsalo para diagnosticar la instalación, comprobar identidad sincronizada y verificar que MCP remoto sigue desactivado.
+description: Informa el nombre y la versión del plugin Closelly de forma equivalente en ChatGPT/Codex, Claude Code y GitHub Copilot CLI. Úsalo para diagnosticar la instalación, comprobar identidad sincronizada y verificar que MCP Business no está auto-activado.
 license: MIT
 metadata:
   plugin_name: closelly-ai-plugins
-  plugin_version: "1.0.0"
+  plugin_version: "1.1.0"
 ---
 
 # Diagnóstico del plugin Closelly
@@ -36,11 +36,11 @@ Informa **el mismo nombre y la misma versión** en ChatGPT/Codex, Claude Code y 
    - `.claude-plugin/plugin.json`
 4. Responde **exactamente** con el bloque de informe descrito en [references/output-format.md](references/output-format.md). Los campos `plugin.name` y `plugin.version` deben coincidir en los tres hosts.
 5. Si algún manifiesto difiere, marca `identity.consistent=false` y lista las diferencias. No “corrijas” el informe inventando un valor.
-6. No actives MCP remoto. El diagnóstico debe reportar `mcp.remote.enabled=false` mientras el endpoint y la autenticación no estén definidos.
+6. No auto-actives MCP. El diagnóstico debe reportar `mcp.remote.enabled=false` mientras no existan `mcp.json` / `.mcp.json` / `.app.json`. El connector documentado es MCP Business (`config/mcp.business.json`); el usuario lo conecta con OAuth.
 
 ## Identidad canónica
 
 - `plugin.name`: `closelly-ai-plugins`
-- `plugin.version`: `1.0.0`
+- `plugin.version`: `1.1.0`
 
 Esos valores deben coincidir con `plugin.json` en la raíz y con los manifiestos de cada host.

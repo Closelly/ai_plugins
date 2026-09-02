@@ -1,0 +1,37 @@
+{
+  "name": "closelly-ai-plugins",
+  "owner": {
+    "name": "Closelly Edutech SpA",
+    "url": "https://closelly.com"
+  },
+  "metadata": {
+    "description": "Catálogo interno de plugins Closelly para Claude Code y clientes compatibles.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "closelly-ai-plugins",
+      "source": "./",
+      "description": "Fuente única, versionada y portable de plugins y skills de Closelly compatible con ChatGPT/Codex, Claude Code y GitHub Copilot CLI.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Closelly Edutech SpA",
+        "url": "https://closelly.com"
+      },
+      "homepage": "https://github.com/Closelly/ai_plugins",
+      "repository": "https://github.com/Closelly/ai_plugins",
+      "license": "MIT",
+      "keywords": [
+        "closelly",
+        "skills",
+        "mcp",
+        "chatgpt",
+        "codex",
+        "claude-code",
+        "github-copilot"
+      ],
+      "category": "productivity",
+      "skills": "./skills/"
+    }
+  ]
+}

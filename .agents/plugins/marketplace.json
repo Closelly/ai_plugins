@@ -1,0 +1,20 @@
+{
+  "name": "closelly-ai-plugins",
+  "interface": {
+    "displayName": "Closelly AI Plugins"
+  },
+  "plugins": [
+    {
+      "name": "closelly-ai-plugins",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

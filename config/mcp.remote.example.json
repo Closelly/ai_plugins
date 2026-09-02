@@ -1,0 +1,12 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "closelly": {
+      "type": "http",
+      "url": "https://mcp.example.invalid/mcp",
+      "headers": {
+        "Authorization": "Bearer ${CLOSELLY_MCP_TOKEN}"
+      }
+    }
+  }
+}

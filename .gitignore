@@ -1,0 +1,10 @@
+dist/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+.DS_Store
+*.zip
+SHA256SUMS
+SHA256SUMS.sha256

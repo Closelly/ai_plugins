@@ -21,11 +21,17 @@ IDENTITY_MANIFESTS = (
     ".codex-plugin/plugin.json",
     ".claude-plugin/plugin.json",
 )
+REQUIRED_SKILLS = ("diagnose-plugin", "mcp-business")
+BUSINESS_MCP_URL = "https://auth.closelly.com/mcp/business"
 REQUIRED_FILES = IDENTITY_MANIFESTS + (
     ".claude-plugin/marketplace.json",
     ".agents/plugins/marketplace.json",
     "skills/diagnose-plugin/SKILL.md",
     "skills/diagnose-plugin/scripts/diagnose.py",
+    "skills/mcp-business/SKILL.md",
+    "skills/mcp-business/references/tools-reference.md",
+    "skills/mcp-business/references/examples.md",
+    "config/mcp.business.json",
     "config/mcp.remote.example.json",
     "LICENSE",
 )
@@ -61,7 +67,7 @@ PLACEHOLDER_HINTS = (
     "${",
     "pending",
 )
-ABSOLUTE_PATH_RE = re.compile(r"(^|[\s\"'])(/?(?:Users|home|opt|var|etc)/[^\s\"']+|file:///[^^\s\"']+|[A-Za-z]:\\[^\s\"']+)")
+ABSOLUTE_PATH_RE = re.compile(r"(^|[\s\"'])(/?(?:Users|home|opt|var|etc)/[^\s\"']+|file:///[^\s\"']+|[A-Za-z]:\\[^\s\"']+)")
 
 
 class ValidationError(Exception):
@@ -234,30 +240,9 @@ def check_skills(root: Path, identity: dict[str, str], errors: list[str]) -> Non
     if not skill_dirs:
         errors.append("skills/ no contiene ninguna skill")
 
-    diagnose = skills_root / "diagnose-plugin"
-    if not (diagnose / "SKILL.md").is_file():
-        errors.append("Falta skills/diagnose-plugin/SKILL.md")
-        return
-
-    text = (diagnose / "SKILL.md").read_text(encoding="utf-8")
-    try:
-        frontmatter = parse_frontmatter(text)
-    except ValidationError as exc:
-        errors.append(str(exc))
-        return
-
-    name = frontmatter.get("name", "")
-    description = frontmatter.get("description", "")
-    if name != "diagnose-plugin":
-        errors.append(f"Frontmatter name debe coincidir con el directorio diagnose-plugin, recibido {name!r}")
-    if not SKILL_NAME_RE.match(name):
-        errors.append(f"Frontmatter name inválido: {name!r}")
-    if not description or len(description) > 1024:
-        errors.append("Frontmatter description ausente o demasiado largo")
-    if frontmatter.get("metadata.plugin_name") != identity.get("name"):
-        errors.append("metadata.plugin_name de la skill no coincide con el identificador del plugin")
-    if frontmatter.get("metadata.plugin_version") != identity.get("version"):
-        errors.append("metadata.plugin_version de la skill no coincide con la versión del plugin")
+    for required_skill in REQUIRED_SKILLS:
+        if not (skills_root / required_skill / "SKILL.md").is_file():
+            errors.append(f"Falta skills/{required_skill}/SKILL.md")
 
     for skill_dir in skill_dirs:
         skill_file = skill_dir / "SKILL.md"
@@ -269,8 +254,18 @@ def check_skills(root: Path, identity: dict[str, str], errors: list[str]) -> Non
         except ValidationError as exc:
             errors.append(f"{skill_file.relative_to(root)}: {exc}")
             continue
-        if fm.get("name") != skill_dir.name:
-            errors.append(f"{skill_file.relative_to(root)} name={fm.get('name')!r} no coincide con {skill_dir.name}")
+        name = fm.get("name", "")
+        description = fm.get("description", "")
+        if name != skill_dir.name:
+            errors.append(f"{skill_file.relative_to(root)} name={name!r} no coincide con {skill_dir.name}")
+        if not SKILL_NAME_RE.match(name):
+            errors.append(f"{skill_file.relative_to(root)} Frontmatter name inválido: {name!r}")
+        if not description or len(description) > 1024:
+            errors.append(f"{skill_file.relative_to(root)} description ausente o demasiado largo")
+        if fm.get("metadata.plugin_name") != identity.get("name"):
+            errors.append(f"{skill_file.relative_to(root)} metadata.plugin_name no coincide con el identificador del plugin")
+        if fm.get("metadata.plugin_version") != identity.get("version"):
+            errors.append(f"{skill_file.relative_to(root)} metadata.plugin_version no coincide con la versión del plugin")
 
     nested = list(skills_root.glob("*/*/SKILL.md"))
     if nested:
@@ -312,6 +307,7 @@ def check_absolute_paths(root: Path, errors: list[str]) -> None:
         ".claude-plugin/plugin.json",
         ".claude-plugin/marketplace.json",
         ".agents/plugins/marketplace.json",
+        "config/mcp.business.json",
         "config/mcp.remote.example.json",
     ):
         path = root / relative
@@ -348,7 +344,7 @@ def check_secrets(root: Path, errors: list[str]) -> None:
 def check_mcp_inactive(root: Path, errors: list[str]) -> None:
     for relative in FORBIDDEN_ACTIVE_MCP:
         if (root / relative).exists():
-            errors.append(f"MCP remoto no debe activarse: elimina {relative} hasta definir endpoint y autenticación")
+            errors.append(f"MCP remoto no debe auto-activarse: elimina {relative}; usa config/mcp.business.json")
     payload = load_json(root / "plugin.json")
     remote = {}
     if isinstance(payload, dict):
@@ -366,6 +362,39 @@ def check_mcp_inactive(root: Path, errors: list[str]) -> None:
         data = load_json(example)
         if not isinstance(data, dict) or "mcpServers" not in data:
             errors.append("config/mcp.remote.example.json debe declarar mcpServers de ejemplo")
+
+    business_config = root / "config/mcp.business.json"
+    if not business_config.is_file():
+        errors.append("Falta config/mcp.business.json con el connector MCP Business")
+    else:
+        data = load_json(business_config)
+        servers = data.get("mcpServers") if isinstance(data, dict) else None
+        entry = servers.get("closelly-business") if isinstance(servers, dict) else None
+        if not isinstance(entry, dict):
+            errors.append("config/mcp.business.json debe declarar mcpServers.closelly-business")
+        else:
+            if str(entry.get("url") or "") != BUSINESS_MCP_URL:
+                errors.append(f"config/mcp.business.json url debe ser {BUSINESS_MCP_URL}")
+            if str(entry.get("type") or "") != "http":
+                errors.append("config/mcp.business.json type debe ser http")
+            auth = entry.get("auth") if isinstance(entry.get("auth"), dict) else {}
+            if str(auth.get("type") or "") != "oauth":
+                errors.append("config/mcp.business.json auth.type debe ser oauth")
+            headers = entry.get("headers") if isinstance(entry.get("headers"), dict) else {}
+            if any("Bearer " in str(value) and "${" not in str(value) for value in headers.values()):
+                errors.append("config/mcp.business.json no debe empaquetar tokens Bearer")
+
+    if isinstance(payload, dict):
+        extensions = payload.get("extensions")
+        business = {}
+        if isinstance(extensions, dict):
+            block = extensions.get("com.closelly.mcp")
+            if isinstance(block, dict) and isinstance(block.get("business"), dict):
+                business = block["business"]
+        if str(business.get("url") or "") != BUSINESS_MCP_URL:
+            errors.append("plugin.json extensions.com.closelly.mcp.business.url debe apuntar al MCP Business")
+        if str(business.get("skill") or "") != "mcp-business":
+            errors.append("plugin.json extensions.com.closelly.mcp.business.skill debe ser mcp-business")
 
     codex = load_json(root / ".codex-plugin/plugin.json")
     if isinstance(codex, dict):

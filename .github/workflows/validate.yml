@@ -1,0 +1,30 @@
+name: Validate
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Validate manifests and constraints
+        run: python3 scripts/validate.py
+
+      - name: Run automated tests
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Package ZIP dry-run
+        run: python3 scripts/package_release.py --output dist --check

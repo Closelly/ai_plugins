@@ -40,4 +40,4 @@ La release publica un archivo: `closelly-ai-plugins-<version>.zip`.
 
 ## MCP Business
 
-Añade el MCP HTTP `https://auth.closelly.com/mcp/business` con OAuth de User. La skill `mcp-business` es el contexto de tools y scopes del tenant.
+Añade el MCP HTTP `https://auth.closelly.com/mcp/business` con OAuth de User. La skill `mcp-business` es el contexto de tools y scopes del tenant. `.mcp.json` es para Claude Code; Copilot CLI no lo auto-activa.

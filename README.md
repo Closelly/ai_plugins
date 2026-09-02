@@ -5,12 +5,12 @@ Fuente única, versionada y portable de plugins y skills de Closelly para **Chat
 | Campo | Valor |
 | --- | --- |
 | Identificador | `closelly-ai-plugins` |
-| Versión | `1.3.0` |
-| Skills | `skills/` (markdown) |
-| Config | `plugin.json`, `config/*.json` |
-| MCP Business | `https://auth.closelly.com/mcp/business` (OAuth; no auto-activado) |
+| Versión | `1.4.0` |
+| Skills | `skills/` (markdown + YAML de UI ChatGPT) |
+| Config | `plugin.json`, `config/*.json`, `.mcp.json` (Claude Code) |
+| MCP Business | `https://auth.closelly.com/mcp/business` (OAuth) |
 
-Este paquete solo contiene **markdown** y **JSON**. No incluye scripts ejecutables.
+Este paquete contiene **markdown**, **JSON** y **YAML**. No incluye scripts ejecutables.
 
 ## Instalar desde GitHub
 
@@ -34,10 +34,13 @@ La skill `mcp-business` da contexto sobre el MCP de clientes:
 
 - URL: `https://auth.closelly.com/mcp/business`
 - Auth: OAuth de User (email + password)
-- Config: `config/mcp.business.json`
+- Config portable: `config/mcp.business.json`
+- Claude Code: `.mcp.json` en la raíz (OAuth al primer uso de tools)
+- ChatGPT UI: `skills/mcp-business/agents/openai.yaml`
+- ChatGPT App (`.app.json`): **pendiente** hasta tener `connector_…`
 - Playbook: `skills/mcp-business/SKILL.md`
 
-Cada host añade el connector; el usuario completa OAuth. No hay `mcp.json` en este repo.
+Claude.ai / Cowork: Settings → custom connector con la misma URL (siempre manual).
 
 ## Release
 

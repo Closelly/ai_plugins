@@ -42,4 +42,15 @@ La release publica un archivo: `closelly-ai-plugins-<version>.zip`.
 
 ## MCP Business
 
-Añade el connector `https://auth.closelly.com/mcp/business` (OAuth de User). La skill `mcp-business` describe tools, scopes y el flujo single-tenant.
+Claude Code lee **`.mcp.json`** en la raíz del plugin (mismo payload que `config/mcp.business.json`):
+
+- URL: `https://auth.closelly.com/mcp/business`
+- Auth: OAuth de User (email + password), no InternalCredential
+
+Tras instalar el plugin, el primer uso de una tool MCP dispara el flujo OAuth. Requiere `business.mcp_enabled = true`. El tenant sale del token.
+
+La skill `mcp-business` describe tools, scopes y el flujo single-tenant.
+
+## Claude.ai / Cowork
+
+En Claude.ai y Cowork el custom connector es **siempre manual**: Settings → añadir connector → URL `https://auth.closelly.com/mcp/business`. Los archivos del repo no preconfiguran esa UI.

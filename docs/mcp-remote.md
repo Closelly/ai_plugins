@@ -1,13 +1,19 @@
-# MCP Business (documentado, no auto-activado)
+# MCP Business
 
-Este plugin documenta el **MCP Business** de Closelly para que ChatGPT/Codex, Claude Code y GitHub Copilot CLI tengan el mismo contexto de tools, scopes y OAuth.
+Este plugin documenta el **MCP Business** de Closelly y, en Claude Code, lo conecta vía `.mcp.json`.
 
-No se publican archivos de auto-conexión:
+## Coexistencia (no mezclar hosts)
 
-- `mcp.json`
-- `.mcp.json`
-- `.app.json`
-- `mcpServers` / `apps` en `.codex-plugin/plugin.json`
+| Archivo | Host | Estado |
+| --- | --- |
+| `.mcp.json` | Claude Code | Publicado. OAuth al primer uso de tools. |
+| `config/mcp.business.json` | Documentación portable | Publicado. Misma URL/OAuth. |
+| `skills/mcp-business/agents/openai.yaml` | ChatGPT / Codex UI | Publicado. |
+| `.app.json` + `"apps"` en `.codex-plugin/plugin.json` | ChatGPT App | **Pendiente** (`connector_…`). |
+| `mcpServers` en `.codex-plugin/plugin.json` | ChatGPT Web | **No.** No es el camino de ChatGPT. |
+| Claude.ai / Cowork custom connector | Claude.ai | Siempre **manual** (Settings → URL). |
+
+`extensions.com.closelly.mcp.remote.enabled` permanece `false` para no tratar la config Claude como App de ChatGPT.
 
 ## Connector canónico
 
@@ -18,17 +24,19 @@ No se publican archivos de auto-conexión:
 | Auth | OAuth 2.0 (User email + password) |
 | Login | `https://auth.closelly.com/oauth/login` |
 | Skill | `skills/mcp-business/` |
-| Config | `config/mcp.business.json` |
+| Config portable | `config/mcp.business.json` |
+| Claude Code | `.mcp.json` |
 
-`extensions.com.closelly.mcp.remote.enabled` permanece `false`. El usuario añade el connector en su host y completa OAuth. El tenant sale del token; no se pasa `business_id` de otro negocio. Requiere `business.mcp_enabled = true`.
+El tenant sale del token; no se pasa `business_id` de otro negocio. Requiere `business.mcp_enabled = true`.
 
 La plantilla copiable está también en `config/mcp.remote.example.json`. No copies secretos ni tokens Bearer al repositorio.
 
 ## Activar en un host
 
 1. Instala este plugin (skills + config).
-2. Añade un Custom Connector / MCP con URL `https://auth.closelly.com/mcp/business`.
-3. Completa OAuth como User del cliente.
-4. Usa la skill `mcp-business` como playbook (qué tool llamar, scopes, PII, exports).
+2. **Claude Code:** `.mcp.json` ya está; completa OAuth al usar una tool.
+3. **ChatGPT:** Custom Connector manual hasta que exista `.app.json`.
+4. **Claude.ai / Cowork:** Settings → custom connector → URL Business.
+5. Usa la skill `mcp-business` como playbook (qué tool llamar, scopes, PII, exports).
 
-Para auto-activar en una versión futura hay que, en el mismo cambio, copiar la config a `mcp.json` / `.mcp.json` según el host, poner `remote.enabled` en `true`, subir SemVer y documentarlo en `CHANGELOG.md`.
+Cuando exista el `connector_…` de ChatGPT, el mismo cambio debe añadir `.app.json`, `"apps": "./.app.json"` en `.codex-plugin/plugin.json`, subir SemVer y documentarlo en `CHANGELOG.md`.

@@ -2,6 +2,18 @@
 
 El versionado sigue [Semantic Versioning](https://semver.org/).
 
+## 1.4.0 - 2026-09-02
+
+### Added
+
+- `.mcp.json` en la raíz para Claude Code (mismo connector OAuth que `config/mcp.business.json`). OAuth de User al primer uso de tools.
+- `skills/mcp-business/agents/openai.yaml` con metadatos de UI para ChatGPT/Codex.
+
+### Changed
+
+- Documentación de coexistencia: ChatGPT App (`.app.json`) queda pendiente; Claude.ai/Cowork sigue siendo connector custom manual; Claude Code usa `.mcp.json`.
+- `extensions.com.closelly.mcp.remote.enabled` permanece `false` (no hay `mcpServers` ni `apps` en `.codex-plugin/plugin.json`).
+
 ## 1.3.0 - 2026-09-02
 
 ### Removed

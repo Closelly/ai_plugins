@@ -8,6 +8,8 @@ codex plugin marketplace add Closelly/ai_plugins
 
 En ChatGPT desktop (Work mode / Codex), el catálogo del repo vive en `.agents/plugins/marketplace.json`. Tras añadir el marketplace, instala `closelly-ai-plugins` desde el directorio de plugins y reinicia la app.
 
+La skill `mcp-business` incluye `agents/openai.yaml` (nombre y descripción en la UI de ChatGPT).
+
 Instalación local para desarrollo:
 
 1. Clona este repositorio.
@@ -40,4 +42,12 @@ La release publica un archivo: `closelly-ai-plugins-<version>.zip`.
 
 ## MCP Business
 
-Añade el Custom Connector con URL `https://auth.closelly.com/mcp/business` y completa OAuth como User. Usa la skill `mcp-business` como playbook (no `/mcp/internal`).
+La skill y el marketplace están listos. La **ChatGPT App** (`.app.json` con `connector_…` y `"apps"` en `.codex-plugin/plugin.json`) queda **pendiente** hasta registrar el App en ChatGPT.
+
+Hasta entonces:
+
+1. Añade un Custom Connector con URL `https://auth.closelly.com/mcp/business`.
+2. Completa OAuth como User (email + password).
+3. Usa `$mcp-business` / la skill como playbook (no `/mcp/internal`).
+
+No uses `.mcp.json` ni `mcpServers` en `.codex-plugin/plugin.json` como integración de ChatGPT Web: ese archivo es para Claude Code.

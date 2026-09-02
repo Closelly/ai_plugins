@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "closelly-ai-plugins",
-  "version": "1.4.0",
-  "description": "Fuente única, versionada y portable de plugins y skills de Closelly compatible con ChatGPT/Codex, Claude Code y GitHub Copilot CLI.",
+  "version": "1.5.0",
+  "description": "Closelly MCP App: skills y connector portable para ChatGPT/Codex, Claude Code y GitHub Copilot CLI.",
   "author": {
     "name": "Closelly Edutech SpA",
     "url": "https://closelly.com"
@@ -12,6 +12,7 @@
   "license": "MIT",
   "keywords": [
     "closelly",
+    "lena",
     "skills",
     "mcp",
     "chatgpt",

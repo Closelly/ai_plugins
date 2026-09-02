@@ -1,7 +1,7 @@
 {
   "name": "closelly-ai-plugins",
   "interface": {
-    "displayName": "Closelly AI Plugins"
+    "displayName": "Closelly MCP App"
   },
   "plugins": [
     {

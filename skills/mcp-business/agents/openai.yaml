@@ -1,7 +1,7 @@
 interface:
-  display_name: "Closelly Business"
+  display_name: "Closelly MCP App"
   short_description: "Consulta estudiantes, cursos, progreso y analytics de Closelly"
-  default_prompt: "Usa $mcp-business para consultar estudiantes, cursos, progreso y analytics del tenant Closelly."
+  default_prompt: "Usa /closelly o /LENA para consultar estudiantes, cursos, progreso y analytics del tenant Closelly."
 
 policy:
   allow_implicit_invocation: true

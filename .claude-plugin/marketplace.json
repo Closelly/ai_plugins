@@ -5,15 +5,16 @@
     "url": "https://closelly.com"
   },
   "metadata": {
-    "description": "Catálogo interno de plugins Closelly para Claude Code y clientes compatibles.",
-    "version": "1.4.0"
+    "description": "Catálogo interno de Closelly MCP App para Claude Code y clientes compatibles.",
+    "version": "1.5.0"
   },
   "plugins": [
     {
       "name": "closelly-ai-plugins",
       "source": "./",
-      "description": "Fuente única, versionada y portable de plugins y skills de Closelly compatible con ChatGPT/Codex, Claude Code y GitHub Copilot CLI.",
-      "version": "1.4.0",
+      "displayName": "Closelly MCP App",
+      "description": "Closelly MCP App. Invoca con /closelly o /LENA.",
+      "version": "1.5.0",
       "author": {
         "name": "Closelly Edutech SpA",
         "url": "https://closelly.com"
@@ -23,6 +24,7 @@
       "license": "MIT",
       "keywords": [
         "closelly",
+        "lena",
         "skills",
         "mcp",
         "chatgpt",
@@ -31,7 +33,8 @@
         "github-copilot"
       ],
       "category": "productivity",
-      "skills": "./skills/"
+      "skills": "./skills/",
+      "commands": "./commands/"
     }
   ]
 }

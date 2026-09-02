@@ -1,19 +1,21 @@
 ---
 name: mcp-business
-description: Playbook del MCP Business de Closelly (/mcp/business). Tools single-tenant, scopes OAuth, PII, analytics y exports. Úsalo para dar contexto a ChatGPT/Codex, Claude Code y GitHub Copilot CLI sobre el connector de clientes.
+description: Playbook de Closelly MCP App (connector /mcp/business). Invoca con /closelly o /LENA. Tools single-tenant, scopes OAuth, PII, analytics y exports.
 license: MIT
 metadata:
   plugin_name: closelly-ai-plugins
-  plugin_version: "1.4.0"
+  plugin_version: "1.5.0"
+  plugin_display_name: Closelly MCP App
   mcp_server: closelly-business
   mcp_url: https://auth.closelly.com/mcp/business
+  invoke: "/closelly or /LENA"
 ---
 
-# Closelly MCP Business
+# Closelly MCP App
 
-Playbook para usar el MCP de empresa (cliente). Solo el business de la sesión OAuth. Este repositorio es la fuente portable de la skill; el servidor vive en el backend Closelly.
+Playbook para usar el MCP de empresa (cliente). Nombre visible: **Closelly MCP App**. Comandos: **`/closelly`** o **`/LENA`**. Solo el business de la sesión OAuth. Este repositorio es la fuente portable; el servidor vive en el backend Closelly.
 
-Conectar el MCP **y** usar esta habilidad. No uses este skill con `/mcp/internal` (ops Closelly).
+Conectar el MCP **y** usar `/closelly` o `/LENA`. No uses este skill con `/mcp/internal` (ops Closelly).
 
 ## Connector
 
@@ -28,15 +30,16 @@ Conectar el MCP **y** usar esta habilidad. No uses este skill con `/mcp/internal
 | Authorization server | `https://auth.closelly.com/.well-known/oauth-authorization-server/mcp/business` |
 | Config portable | `config/mcp.business.json` |
 | Claude Code | `.mcp.json` en la raíz del plugin (OAuth al primer uso de tools) |
-| ChatGPT UI | `agents/openai.yaml` |
+| ChatGPT UI | `agents/openai.yaml` (display_name: Closelly MCP App) |
 | ChatGPT App | Pendiente: falta `connector_…` para `.app.json` |
+| Comandos | `/closelly` y `/LENA` (`commands/`) |
 
 ## Coexistencia por host
 
 | Host | Skill | Connector MCP |
 |------|-------|----------------|
-| **ChatGPT / Codex** | Marketplace + `agents/openai.yaml` | App (`.app.json`) **pendiente**. Hasta entonces, Custom Connector manual con la URL de Business. **No** uses `.mcp.json` ni `mcpServers` en `.codex-plugin/plugin.json`. |
-| **Claude Code** | Plugin + esta skill | **`.mcp.json`** en la raíz: OAuth de User al primer uso de tools. |
+| **ChatGPT / Codex** | Closelly MCP App + `/closelly` o `/LENA` | App (`.app.json`) **pendiente**. Hasta entonces, Custom Connector manual con la URL de Business. **No** uses `.mcp.json` ni `mcpServers` en `.codex-plugin/plugin.json`. |
+| **Claude Code** | Plugin + `/closelly` o `/LENA` | **`.mcp.json`** en la raíz: OAuth de User al primer uso de tools. |
 | **Claude.ai / Cowork** | Esta skill si está instalada | Siempre **manual**: Settings → custom connector → URL `https://auth.closelly.com/mcp/business`. El repo no puede preconfigurar Claude.ai. |
 | **GitHub Copilot CLI** | Plugin + esta skill | Añade el MCP HTTP con la misma URL y OAuth de User. |
 | **Cursor** | `cp -r` a `~/.cursor/skills/` | Connector MCP OAuth en Cursor. |
@@ -49,8 +52,8 @@ Fuente portable: este plugin (`skills/mcp-business/`). ZIP público del backend:
 
 | Host | Cómo usar esta skill |
 |------|----------------------|
-| **ChatGPT / Codex** | Instala `closelly-ai-plugins`; UI en `agents/openai.yaml`; connector App pendiente |
-| **Claude Code** | Instala el plugin; Skills cargan `skills/mcp-business/`; `.mcp.json` dispara OAuth |
+| **ChatGPT / Codex** | Instala Closelly MCP App; usa `/closelly` o `/LENA`; connector App pendiente |
+| **Claude Code** | Instala el plugin; usa `/closelly` o `/LENA`; `.mcp.json` dispara OAuth |
 | **GitHub Copilot CLI** | Instala el plugin; usa esta skill como contexto del MCP Business |
 | **Cursor** | Descomprimir o `cp -r` a `~/.cursor/skills/`; conectar MCP OAuth |
 

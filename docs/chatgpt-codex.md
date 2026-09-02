@@ -46,3 +46,7 @@ Pide al agente que use la skill `diagnose-plugin`. Debe informar:
 plugin.name=closelly-ai-plugins
 plugin.version=<semver del manifiesto>
 ```
+
+## MCP Business
+
+Añade el Custom Connector con URL `https://auth.closelly.com/mcp/business` y completa OAuth como User. Usa la skill `mcp-business` como playbook (no `/mcp/internal`).

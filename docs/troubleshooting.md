@@ -21,7 +21,7 @@ Debe existir un único directorio físico `skills/`. No crees `skills/` dentro d
 
 ## MCP se intentó conectar solo
 
-El plugin no debe incluir `mcp.json`, `.mcp.json` ni `.app.json`. Si aparecen, elimínalos. El ejemplo remoto vive solo en `config/mcp.remote.example.json`.
+El plugin no debe incluir `mcp.json`, `.mcp.json` ni `.app.json`. Si aparecen, elimínalos. El connector documentado vive en `config/mcp.business.json` y se conecta con OAuth en el host.
 
 ## El ZIP no instala
 

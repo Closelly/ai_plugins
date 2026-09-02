@@ -2,6 +2,18 @@
 
 El versionado sigue [Semantic Versioning](https://semver.org/).
 
+## 1.1.0 - 2026-09-02
+
+### Added
+
+- Skill `mcp-business` portada del playbook de backend (tools, scopes OAuth, PII, analytics y exports).
+- Config documentada del connector MCP Business en `config/mcp.business.json` (`https://auth.closelly.com/mcp/business`, OAuth).
+- Referencias `tools-reference.md` y `examples.md` como único directorio físico `skills/mcp-business/`.
+
+### Changed
+
+- `extensions.com.closelly.mcp` documenta el endpoint y la skill de Business; `remote.enabled` sigue en `false` (sin auto-activar `mcp.json`).
+
 ## 1.0.0 - 2026-09-02
 
 ### Added

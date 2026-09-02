@@ -258,7 +258,7 @@ JSON en `content[0].text`. Tenant fijado por la sesión OAuth.
   "course_id": 1075,
   "business_id": 106,
   "file_name": "clientes-felices-progreso.json",
-  "download_url": "https://s3-[REDACTED].amazonaws.com/[REDACTED]/...?X-Amz-...",
+  "download_url": "https://s3-sa-east-1.amazonaws.com/closelly-prod/...?X-Amz-...",
   "expires_at": "2026-08-11T22:00:00Z",
   "expires_in_seconds": 3600,
   "format": "json",

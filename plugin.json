@@ -1,0 +1,32 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "closelly-ai-plugins",
+  "version": "1.0.0",
+  "description": "Fuente única, versionada y portable de plugins y skills de Closelly compatible con ChatGPT/Codex, Claude Code y GitHub Copilot CLI.",
+  "author": {
+    "name": "Closelly Edutech SpA",
+    "url": "https://closelly.com"
+  },
+  "homepage": "https://github.com/Closelly/ai_plugins",
+  "repository": "https://github.com/Closelly/ai_plugins",
+  "license": "MIT",
+  "keywords": [
+    "closelly",
+    "skills",
+    "mcp",
+    "chatgpt",
+    "codex",
+    "claude-code",
+    "github-copilot"
+  ],
+  "extensions": {
+    "com.closelly.mcp": {
+      "remote": {
+        "enabled": false,
+        "status": "prepared-not-activated",
+        "reason": "Endpoint y autenticación pendientes de definición.",
+        "exampleConfig": "./config/mcp.remote.example.json"
+      }
+    }
+  }
+}

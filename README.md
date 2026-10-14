@@ -6,7 +6,7 @@ Fuente única, versionada y portable de **Closelly MCP App** para **ChatGPT/Code
 | --- | --- |
 | Nombre visible | Closelly MCP App |
 | Identificador | `closelly-ai-plugins` |
-| Versión | `1.5.0` |
+| Versión | `1.6.0` |
 | Comandos | `/closelly`, `/LENA` |
 | Skills | `skills/` (markdown + YAML de UI ChatGPT) |
 | Config | `plugin.json`, `config/*.json`, `.mcp.json` (Claude Code) |

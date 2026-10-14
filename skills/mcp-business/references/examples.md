@@ -16,6 +16,7 @@
 | Usuarios de la empresa CCU | `search_students` | `{ "custom_field": "Empresa", "custom_field_value": "CCU" }` | |
 | Mis grupos | `list_groups` | `{}` | categorías no de sistema + conteo |
 | Perfil completo de María (id 42) | `get_student` | `{ "student_id": 42 }` | grupos + sesiones; PII con scope |
+| Vista 360 de María | `get_student` | `{ "student_id": 42, "include": ["360"] }` | challenges, rooms, sence, devices, login_url |
 | ¿Cómo va María (id 42)? | `get_student_progress` | `{ "student_id": 42 }` | |
 | Qué hizo María en la app | `get_student_activity` | `{ "student_id": 42, "event_types": ["session", "conversation"] }` | timeline, metadatos sin texto |
 | % de completitud general | `get_progress` | `{}` | `unit=enrollments` |
@@ -61,3 +62,15 @@
 4. `get_engagement_summary` / `get_lena_metrics` para panorama analítico → `search_lena_conversations` → `get_lena_conversation` (`content_mode=full` con `interactions.read`) para bajar al detalle.
 5. `list_surveys` / `list_challenges` / `list_campaigns` / `list_news` → tool `get_*_summary` o `get_*_engagement` con el `id` encontrado.
 6. Curso o estudiante de otro business → `Course not found` / `Student not found` (correcto; no insistir con IDs externos).
+
+
+## SENCE — implementaciones y DJ
+
+| Pregunta | Tool | Argumentos | Notas |
+|----------|------|------------|-------|
+| Mis implementaciones SENCE abiertas | `list_sence_implementations` | `{ "status": "open" }` | Solo tenant de la sesión |
+| Implementaciones SENCE del curso 15 | `list_sence_implementations` | `{ "course_id": 15 }` | Descubrir `implementation_id` |
+| ¿Cuándo se sincronizó la implementación 345? | `get_sence_implementation` | `{ "implementation_id": 345 }` | `last_sync` y `last_scheduled_sync` |
+| Historial de sincronizaciones programadas | `get_sence_implementation_syncs` | `{ "implementation_id": 345, "source": "scheduled" }` | tiempos, conteos, errores |
+| DJs pendientes | `get_sence_implementation_declarations` | `{ "implementation_id": 345, "status": "progress" }` | sin PII por defecto |
+| DJs con nombre/email/RUT | `get_sence_implementation_declarations` | `{ "implementation_id": 345, "include_pii": true }` | requiere `mcp.clients.pii.read` |

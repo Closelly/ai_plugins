@@ -2,6 +2,20 @@
 
 El versionado sigue [Semantic Versioning](https://semver.org/).
 
+## 1.6.0 - 2026-10-14
+
+### Added
+
+- Tools SENCE en el skill Business: `list_sence_implementations`, `get_sence_implementation`, `get_sence_implementation_syncs`, `get_sence_implementation_declarations` (scope `mcp.clients.progress.read`).
+- Vista 360 de `get_student` (`include: ["360"]` / secciones challenges, rooms, sence, devices, login_url).
+- Ejemplos SENCE y export structure alineados con el playbook del backend.
+
+### Changed
+
+- Inventario documentado: **35 tools** (antes 31).
+- Comparación vs MCP Internal: exports unificados (`export_course_progress` / `export_business_progress`); se elimina la referencia obsoleta a `get_course_full_export`.
+- Skill resincronizada desde `.agents/skills/mcp-business/` del backend Closelly (rutas `references/` del plugin).
+
 ## 1.5.0 - 2026-09-02
 
 ### Changed
@@ -19,7 +33,7 @@ El versionado sigue [Semantic Versioning](https://semver.org/).
 ### Changed
 
 - Documentación de coexistencia: ChatGPT App (`.app.json`) queda pendiente; Claude.ai/Cowork sigue siendo connector custom manual; Claude Code usa `.mcp.json`.
-- `extensions.com.closelly.mcp.remote.enabled` permanece `false` (no hay `mcpServers` ni `apps` en `.codex-plugin/plugin.json`).
+- `extensions.com.closelly.mcp.remote.enabled` permanece `false` (no hay `mcpServers` ni apps en `.codex-plugin/plugin.json`).
 
 ## 1.3.0 - 2026-09-02
 

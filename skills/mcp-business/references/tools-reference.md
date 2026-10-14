@@ -82,9 +82,10 @@ JSON en `content[0].text`. Tenant fijado por la sesión OAuth.
 
 ## get_student
 
-- **Scope:** `mcp.clients.students.read` (+ `mcp.clients.pii.read` para contacto y `custom_fields`)
-- **Input (required):** `student_id`; opcional `include` (`profile`, `custom_fields`, `groups`, `sessions_summary`, `progress_summary`)
-- **Success:**
+- **Scope:** `mcp.clients.students.read` (+ `mcp.clients.pii.read` para contacto y `custom_fields`; + `mcp.clients.interactions.read` para texto de `rooms`)
+- **Input (required):** `student_id`; opcional `include`
+- **`include`:** `profile`, `contact`, `custom_fields`, `groups`, `sessions_summary`, `progress_summary`, `learning_summary`, `challenges`, `rooms`, `sence`, `devices`, `login_url`. Atajos: `360` / `all` (todas las secciones). Default: secciones núcleo (profile, custom_fields, groups, sessions_summary, progress_summary).
+- **Success (núcleo):**
 
 ```json
 {
@@ -105,7 +106,9 @@ JSON en `content[0].text`. Tenant fijado por la sesión OAuth.
 }
 ```
 
-- **Con PII:** `profile` agrega `name`, `lastname`, `email`, `rut`, `phone`; se incluye `custom_fields[]` (`name`, `title`, `value`).
+- **Con `include: ["360"]`:** además `contact`, `learning_summary` (cursos/medallas), `challenges` (`resume` + `items`), `rooms` (Lena), `sence` (usuario + implementaciones/declaraciones), `devices` (summary + items), `login_url`.
+- **Con PII:** `profile` agrega `name`, `lastname`, `email`, `rut`, `phone`; se incluye `custom_fields[]` / `contact`.
+- **Sin `interactions.read`:** mensajes de `rooms` vienen redactados (`message: "[redacted]"`).
 - **Errors:** `{ "error": "Student not found" }`
 
 ## get_student_activity
@@ -258,7 +261,7 @@ JSON en `content[0].text`. Tenant fijado por la sesión OAuth.
   "course_id": 1075,
   "business_id": 106,
   "file_name": "clientes-felices-progreso.json",
-  "download_url": "https://s3-sa-east-1.amazonaws.com/closelly-prod/...?X-Amz-...",
+  "download_url": "https://s3-[REDACTED].amazonaws.com/[REDACTED]/...?X-Amz-...",
   "expires_at": "2026-08-11T22:00:00Z",
   "expires_in_seconds": 3600,
   "format": "json",
@@ -563,3 +566,38 @@ Estas tools envuelven la respuesta en el **envelope analítico** (los datos van 
 - **grain/unit:** `student` / `unique_students`
 - **`result`:** `eligible_users`, `active_users`, `sessions`, `distinct_active_days`, `total_duration_seconds`, `average_session_duration_seconds`, `dau`, `wau`, `mau`, `sessions_per_active_user`, `dau_mau_stickiness`, `wau_mau_stickiness`
 - **`definitions`:** describe DAU/WAU/MAU. **`data_quality.status = partial`** — las sesiones no persisten canal/dispositivo/OS histórico, por eso esas distribuciones se omiten.
+
+
+## SENCE — implementaciones y declaraciones
+
+Las cuatro tools usan `mcp.clients.progress.read` y siempre quedan limitadas al business de la sesión OAuth.
+
+### list_sence_implementations
+
+- **Scope:** `mcp.clients.progress.read`
+- **Input opcional:** `course_id`, `status` (`preview|open|closed`), `page`, `per_page`.
+- **Success:** `business_id`, `pagination`, `implementations[]`.
+
+### get_sence_implementation
+
+- **Scope:** `mcp.clients.progress.read`
+- **Input required:** `implementation_id`
+- **Success:** metadata + resumen `declarations` + `last_sync` + `last_scheduled_sync`.
+- No expone `sence_token`, ZIP/S3 ni `request_meta`.
+- Una implementación de otro tenant se responde como `SENCE implementation not found`.
+
+### get_sence_implementation_syncs
+
+- **Scope:** `mcp.clients.progress.read`
+- **Input required:** `implementation_id`
+- **Input opcional:** `source`, `status`, `from_date`, `to_date`, `page`, `per_page`.
+- **Success:** historial `syncs[]` con estado, origen, tiempos, conteos y errores; sin artefactos S3 ni secretos.
+
+### get_sence_implementation_declarations
+
+- **Scope:** `mcp.clients.progress.read`
+- **Input required:** `implementation_id`
+- **Input opcional:** `status`, `enabled`, `include_pii`, `page`, `per_page`.
+- Sin `include_pii`: devuelve IDs técnicos (`sence_user_id`, `front_user_id`) y estado DJ.
+- `include_pii: true` requiere además `mcp.clients.pii.read`; agrega nombre, email y UID/RUT.
+- No devuelve `doc_declaration_url`.

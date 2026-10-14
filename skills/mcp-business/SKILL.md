@@ -1,10 +1,10 @@
 ---
 name: mcp-business
-description: Playbook de Closelly MCP App (connector /mcp/business). Invoca con /closelly o /LENA. Tools single-tenant, scopes OAuth, PII, analytics y exports.
+description: Playbook de Closelly MCP App (connector /mcp/business). Invoca con /closelly o /LENA. Tools single-tenant, scopes OAuth, PII, analytics, SENCE y exports.
 license: MIT
 metadata:
   plugin_name: closelly-ai-plugins
-  plugin_version: "1.5.0"
+  plugin_version: "1.6.0"
   plugin_display_name: Closelly MCP App
   mcp_server: closelly-business
   mcp_url: https://auth.closelly.com/mcp/business
@@ -109,7 +109,7 @@ Las 18 tools analíticas (`get_student_activity_progress`, evaluaciones, LENA, e
 | Tool | Scope mínimo |
 |------|--------------|
 | `get_business`, `search_students`, `get_student`, `list_groups` | `mcp.clients.students.read` |
-| `list_courses`, `get_progress`, `get_student_progress`, `get_student_activity`, `get_course_detail`, `get_course_progress_summary` | `mcp.clients.progress.read` |
+| `list_courses`, `get_progress`, `get_student_progress`, `get_student_activity`, `get_course_detail`, `get_course_progress_summary`, `list_sence_implementations`, `get_sence_implementation`, `get_sence_implementation_syncs`, `get_sence_implementation_declarations` | `mcp.clients.progress.read` |
 | `get_reports_summary` (incl. bloque `engagement`) | `mcp.clients.reports.read` |
 | `export_course_progress`, `export_business_progress` | `mcp.clients.export` |
 | `get_student_activity_progress` | `mcp.clients.activities.read` |
@@ -126,11 +126,12 @@ Las 18 tools analíticas (`get_student_activity_progress`, evaluaciones, LENA, e
 | PII (contacto) y valores de campos personalizados en listados / detalle / export / participantes | `mcp.clients.pii.read` (adicional) |
 | Texto de conversaciones (`include_message_text`, `get_lena_conversation` con `content_mode=full`), respuestas crudas (`include_assessment_answers`) y feedback/reportes de evaluación (`get_conversational_assessment`) | `mcp.clients.interactions.read` (adicional) |
 
-## Flujo recomendado (3 niveles)
+## Flujo recomendado
 
 1. **Descubrimiento:** `get_business` → `list_courses` → `list_groups` → `search_students` (usa `include_summary` para traer perfil resumido + grupos + sesiones).
-2. **Análisis:** `get_reports_summary` (con `from_date`/`to_date`/`group_by` para el bloque `engagement`) → `get_progress` / `get_course_progress_summary` → `get_student` / `get_student_progress` / `get_student_activity`.
-3. **Exportación:** `export_course_progress` / `export_business_progress` → entregar al usuario el `download_url` del archivo `.json` (no incrustar el contenido en la conversación). El enlace **caduca a los 60 minutos**.
+2. **SENCE:** `list_sence_implementations` → `get_sence_implementation` → historial/declaraciones según necesidad.
+3. **Análisis:** `get_reports_summary` (con `from_date`/`to_date`/`group_by` para el bloque `engagement`) → `get_progress` / `get_course_progress_summary` → `get_student` / `get_student_progress` / `get_student_activity`.
+4. **Exportación:** `export_course_progress` / `export_business_progress` → entregar al usuario el `download_url` del archivo `.json` (no incrustar el contenido en la conversación). El enlace **caduca a los 60 minutos**.
 
 Nunca pedir un `course_id` al usuario si puedes obtenerlo con `list_courses`.
 
@@ -148,9 +149,77 @@ Las tools de export **no** devuelven el dataset en el chat. Generan un **archivo
 
 **Uso obligatorio del LLM/cliente:** llamar la tool → descargar `download_url` → analizar el `.json`. Si el enlace expiró, volver a llamar la tool.
 
+### `export_course_progress` — estructura del `.json`
+
+Archivo completo del curso (todos los asignados). Envelope:
+
+```json
+{
+  "course_id": 15,
+  "business_id": 106,
+  "as_of": "2026-08-12T15:00:00Z",
+  "include_activity_detail": true,
+  "include_pii": false,
+  "export": {
+    "course": { "id": 15, "name": "...", "sections": [{ "activities": [] }] },
+    "users": [
+      {
+        "id": 1,
+        "name": "...",
+        "lastname": "...",
+        "course_status": "completed",
+        "progress_percent": 100.0,
+        "user_activities": [{ "activity_id": 10, "status": "completed", "grade": 90.0 }]
+      }
+    ]
+  }
+}
+```
+
+- Por defecto sin PII (`email`/`rut`/`phone` omitidos). Con `include_pii: true` + scope `mcp.clients.pii.read` se incluyen.
+- `include_activity_detail: false` omite `user_activities` (archivo más liviano).
+- `include_lena_conversations: true` agrega `lena_conversations` (chat de curso + de actividades: quiz/role play) por usuario.
+- `include_assessment_answers: true` agrega respuestas crudas (`assessment_answers`/`test_answers`) y `include_message_text: true` conserva el texto de los mensajes; ambos requieren `mcp.clients.interactions.read` (sin ese scope → `insufficient_scope`).
+- `exclude_test_users: true` omite usuarios `is_test`.
+
+### `export_business_progress` — estructura del `.json`
+
+Snapshot de matrículas (`unit: enrollments`), todas las filas:
+
+```json
+{
+  "business_id": 106,
+  "as_of": "2026-08-12T15:00:00Z",
+  "unit": "enrollments",
+  "total": 500,
+  "include_pii": false,
+  "rows": [
+    {
+      "student_id": 1,
+      "course_id": 15,
+      "course_name": "...",
+      "status": "initiated",
+      "progress_percent": 40.0,
+      "assignment_date": "...",
+      "initiated_date": "...",
+      "completed_date": null,
+      "last_activity_at": "...",
+      "active": true,
+      "name": "..."
+    }
+  ]
+}
+```
+
+- Sin `include_pii`: sin `email`/`rut`/`phone` (se puede conservar `name`).
+- Opcional `course_id` para limitar a un curso; sin él exporta **todas** las matrículas del tenant.
+- Opcional `exclude_test_users: true` para omitir usuarios `is_test`.
+
 Detalle de estructura: [references/tools-reference.md](references/tools-reference.md).
 
 ## Tools (resumen)
+
+Inventario actual: **35 tools**.
 
 | Tool | Uso | Respuesta clave |
 |------|-----|-----------------|
@@ -158,7 +227,7 @@ Detalle de estructura: [references/tools-reference.md](references/tools-referenc
 | `list_courses` | Descubrir cursos e ids | `courses[]` con `id`, `students_count`, `average_progress` |
 | `list_groups` | Descubrir grupos (categorías no de sistema) | `groups[]` con `id`, `name`, `students_count` |
 | `search_students` | Listar / buscar FrontUsers | filtros `query`, `active`, `course_id`, `progress_status`, `group_id`, `is_test`, `front_user_type`, `last_activity_from/to`, `custom_field`; `include_summary`; sin PII por defecto |
-| `get_student` | Perfil consolidado de una persona | `profile`, `groups`, `sessions_summary`, `progress_summary`; `custom_fields`/contacto con PII |
+| `get_student` | Perfil consolidado / vista 360 | Secciones núcleo + opcional `include: ["360"]` (challenges, rooms, sence, devices, login_url); PII/interactions según scope |
 | `get_student_progress` | Avance de una persona | `courses[]` con % y fechas |
 | `get_student_activity` | Timeline transversal de una persona | `events[]` (sesiones, vistas, actividades, conversaciones), metadatos sin texto |
 | `get_progress` | Métricas globales o por curso | `unit`, `total_enrollments`, `metrics` |
@@ -167,6 +236,10 @@ Detalle de estructura: [references/tools-reference.md](references/tools-referenc
 | `get_reports_summary` | Dashboard (+ `engagement` opcional) | usuarios, matrículas, `progress_by_course`, `definitions`, `engagement` |
 | `export_course_progress` | Archivo `.json` completo de un curso (descargar; enlace 60 min) | `download_url`, `expires_at`, `rows` |
 | `export_business_progress` | Archivo `.json` de matrículas (descargar; enlace 60 min) | `download_url`, `expires_at`, `rows` |
+| `list_sence_implementations` | Implementaciones SENCE del tenant | `implementations[]`, `course_ids`, `declaration_signatures_synced_at` |
+| `get_sence_implementation` | Detalle de implementación + estado de sync | `declarations`, `last_sync`, `last_scheduled_sync` |
+| `get_sence_implementation_syncs` | Historial DJ por implementación | `syncs[]`, filtros `source/status/from_date/to_date` |
+| `get_sence_implementation_declarations` | DJs de la implementación | `declarations[]`; `include_pii` requiere `mcp.clients.pii.read` |
 
 ### Tools analíticas expandidas (envelope analítico)
 
@@ -197,6 +270,7 @@ Ejemplos: [references/examples.md](references/examples.md).
 ## vs MCP Internal (ops)
 
 - Business es **single-tenant**; Internal ve toda la plataforma.
+- Las 4 tools SENCE existen en ambos MCP. Business infiere el tenant desde OAuth; Internal permite `business_id` explícito.
 - `get_course_detail` existe en ambos, pero Business rechaza cursos de otro business (`Course not found`).
-- Export Business: `export_course_progress` / `export_business_progress` → `.json` en S3 + `download_url` (60 min). `export_course_progress` puede incluir chats LENA (`include_lena_conversations`); el texto de los mensajes y las respuestas crudas de evaluaciones requieren `mcp.clients.interactions.read`. Internal: `get_course_full_export` → mismo patrón S3 e incluye chats LENA sin scope extra (es ops).
+- Export Business: `export_course_progress` / `export_business_progress` → `.json` en S3 + `download_url` (60 min). `export_course_progress` puede incluir chats LENA (`include_lena_conversations`); el texto de los mensajes y las respuestas crudas de evaluaciones requieren `mcp.clients.interactions.read`. Internal: `export_course_progress` / `export_business_progress` → mismo patrón S3; PII e interacciones incluidas sin scopes extra (ops).
 - Sin `json_config` administrativo.

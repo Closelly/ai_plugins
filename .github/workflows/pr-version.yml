@@ -1,0 +1,75 @@
+name: PR version
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  require-version-bump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Require plugin.json version bump vs base
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+        run: |
+          set -euo pipefail
+          git fetch origin "$BASE_REF"
+
+          PR_VERSION="$(jq -r '.version' plugin.json)"
+          BASE_VERSION="$(git show "origin/${BASE_REF}:plugin.json" | jq -r '.version')"
+
+          echo "base (${BASE_REF}) version=${BASE_VERSION}"
+          echo "PR version=${PR_VERSION}"
+
+          if [[ ! "$PR_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error::plugin.json version is not valid SemVer: ${PR_VERSION}"
+            exit 1
+          fi
+
+          if [[ "$PR_VERSION" == "$BASE_VERSION" ]]; then
+            echo "::error::Cada PR debe actualizar la versión en plugin.json (sigue en ${PR_VERSION}). Ver docs/release.md"
+            exit 1
+          fi
+
+          export BASE_VERSION PR_VERSION BASE_REF
+          python3 - <<'PY'
+          import os, re, sys
+
+          def parse(v: str):
+              m = re.match(r"^(\d+)\.(\d+)\.(\d+)", v)
+              if not m:
+                  raise SystemExit(f"unparseable: {v}")
+              return tuple(int(x) for x in m.groups())
+
+          base = os.environ["BASE_VERSION"]
+          pr = os.environ["PR_VERSION"]
+          base_ref = os.environ["BASE_REF"]
+          if parse(pr) <= parse(base):
+              print(f"::error::La versión del PR ({pr}) debe ser mayor que la de {base_ref} ({base})")
+              sys.exit(1)
+          print(f"OK: {pr} > {base}")
+          PY
+
+      - name: Require version sync across manifests
+        run: |
+          set -euo pipefail
+          ROOT="$(jq -r '.version' plugin.json)"
+          CODEX="$(jq -r '.version' .codex-plugin/plugin.json)"
+          CLAUDE="$(jq -r '.version' .claude-plugin/plugin.json)"
+          MARKET="$(jq -r '.metadata.version // .plugins[0].version' .claude-plugin/marketplace.json)"
+          echo "plugin.json=${ROOT}"
+          echo ".codex-plugin=${CODEX}"
+          echo ".claude-plugin=${CLAUDE}"
+          echo "marketplace=${MARKET}"
+          if [[ "$ROOT" != "$CODEX" || "$ROOT" != "$CLAUDE" || "$ROOT" != "$MARKET" ]]; then
+            echo "::error::Las versiones de los manifests no coinciden. Alinea plugin.json, .codex-plugin/plugin.json, .claude-plugin/plugin.json y marketplace."
+            exit 1
+          fi

@@ -38,7 +38,7 @@ claude plugin marketplace remove closelly-ai-plugins
 
 ## ZIP de release
 
-La release publica un archivo: `closelly-ai-plugins-<version>.zip`.
+El workflow de release (desde plugin.json, sin tag manual) publica: `closelly-ai-plugins-<version>.zip`.
 
 ## MCP Business
 

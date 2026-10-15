@@ -25,4 +25,4 @@ Reinstala o actualiza el plugin a `1.5.0`. Los comandos viven en `commands/close
 
 ## ZIP
 
-La release publica un archivo: `closelly-ai-plugins-<version>.zip`.
+El workflow de release (desde plugin.json, sin tag manual) publica: `closelly-ai-plugins-<version>.zip`.

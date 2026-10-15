@@ -8,11 +8,11 @@ Este repositorio es la fuente única de **Closelly MCP App** (`closelly-ai-plugi
 | --- | --- |
 | Nombre visible | Closelly MCP App |
 | Identificador | `closelly-ai-plugins` |
-| Versión | `1.5.0` |
+| Versión | `1.8.0` |
 | Comandos | `/closelly`, `/LENA` |
 | MCP Business | `https://auth.closelly.com/mcp/business` (OAuth, skill `mcp-business`) |
 
-Alinea `name`, `version` y el display name **Closelly MCP App** en `plugin.json`, `.codex-plugin/plugin.json`, `.claude-plugin/plugin.json` y el marketplace Claude.
+Alinea `name`, `version` y el display name **Closelly MCP App** en `plugin.json`, `.codex-plugin/plugin.json`, `.claude-plugin/plugin.json` y el marketplace Claude. Cada PR debe incrementar `version` (ver [release.md](release.md)).
 
 ## Layout
 

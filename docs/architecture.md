@@ -23,7 +23,7 @@ Alinea `name`, `version` y el display name **Closelly MCP App** en `plugin.json`
 ├── commands/
 │   ├── closelly.md                    # /closelly
 │   └── LENA.md                        # /LENA
-├── .codex-plugin/plugin.json          # sin mcpServers ni apps
+├── .codex-plugin/plugin.json          # mcpServers -> ./.mcp.json
 ├── .claude-plugin/plugin.json
 ├── .claude-plugin/marketplace.json
 ├── .agents/plugins/marketplace.json
@@ -40,8 +40,8 @@ Alinea `name`, `version` y el display name **Closelly MCP App** en `plugin.json`
 | Host | Cómo se conecta |
 | --- | --- |
 | Claude Code | `.mcp.json` en la raíz. Invoca `/closelly` o `/LENA`. OAuth al primer uso de tools. |
-| ChatGPT / Codex | UI Closelly MCP App; `/closelly` o `/LENA`. App (`.app.json`) **pendiente**. Custom Connector manual hasta entonces. |
+| ChatGPT / Codex | UI Closelly MCP App; `/closelly` o `/LENA`. MCP vía `mcpServers` → `.mcp.json` (OAuth DCR). `.app.json` opcional. |
 | Claude.ai / Cowork | Siempre manual: Settings → custom connector → URL Business. |
 | Copilot CLI | MCP HTTP manual; `/closelly` o `/LENA` si el host carga `commands/`. |
 
-No hay `mcpServers` ni `apps` en `.codex-plugin/plugin.json`. `extensions.com.closelly.mcp.remote.enabled` permanece `false` para no tratar `.mcp.json` como App de ChatGPT.
+`.codex-plugin/plugin.json` declara `mcpServers: "./.mcp.json"`. `extensions.com.closelly.mcp.remote.enabled` es `true` (bundle ChatGPT/Codex). `.app.json` sigue opcional.

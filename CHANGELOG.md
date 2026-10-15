@@ -1,6 +1,18 @@
 # Changelog
 
 El versionado sigue [Semantic Versioning](https://semver.org/).
+## 1.7.0 - 2026-10-15
+
+### Added
+
+- ChatGPT/Codex: `"mcpServers": "./.mcp.json"` en `.codex-plugin/plugin.json` para conectar el MCP Business al instalar el plugin (opción bundle portable).
+- Auth OpenAI en `.mcp.json`: `extensions.com.openai.auth` con `client.mode: dcr` (el AS de Closelly expone `registration_endpoint`).
+- `dependencies.tools` del MCP en `skills/mcp-business/agents/openai.yaml`.
+
+### Changed
+
+- `extensions.com.closelly.mcp.remote.enabled` pasa a `true` con status `chatgpt-codex-mcp-servers-bundled`.
+- Docs de coexistencia: ChatGPT/Codex ya no exigen Custom Connector manual ni `.app.json` para usar el MCP; `.app.json` queda opcional.
 
 ## 1.6.0 - 2026-10-14
 

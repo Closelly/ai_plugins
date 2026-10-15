@@ -6,7 +6,7 @@ Fuente única, versionada y portable de **Closelly MCP App** para **ChatGPT/Code
 | --- | --- |
 | Nombre visible | Closelly MCP App |
 | Identificador | `closelly-ai-plugins` |
-| Versión | `1.6.0` |
+| Versión | `1.7.0` |
 | Comandos | `/closelly`, `/LENA` |
 | Skills | `skills/` (markdown + YAML de UI ChatGPT) |
 | Config | `plugin.json`, `config/*.json`, `.mcp.json` (Claude Code) |
@@ -42,7 +42,8 @@ Closelly MCP App da contexto sobre el MCP de clientes:
 - Config portable: `config/mcp.business.json`
 - Claude Code: `.mcp.json` en la raíz (OAuth al primer uso de tools)
 - ChatGPT UI: `skills/mcp-business/agents/openai.yaml` (nombre Closelly MCP App)
-- ChatGPT App (`.app.json`): **pendiente** hasta tener `connector_…`
+- ChatGPT/Codex MCP: `mcpServers` → `.mcp.json` (OAuth DCR al conectar)
+- ChatGPT App (`.app.json` / `connector_…`): opcional, no requerido para el bundle
 - Playbook: `skills/mcp-business/SKILL.md`
 
 Claude.ai / Cowork: Settings → custom connector con la misma URL (siempre manual).

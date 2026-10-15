@@ -40,14 +40,24 @@ Quita también el plugin de `~/.codex/config.toml` si quedó habilitado.
 
 La release publica un archivo: `closelly-ai-plugins-<version>.zip`.
 
-## MCP Business
+## MCP Business (bundle portable)
 
-La skill y el marketplace están listos. La **ChatGPT App** (`.app.json` con `connector_…` y `"apps"` en `.codex-plugin/plugin.json`) queda **pendiente** hasta registrar el App en ChatGPT.
+Al instalar el plugin, ChatGPT/Codex cargan el MCP Business porque `.codex-plugin/plugin.json` declara:
 
-Hasta entonces:
+```json
+"mcpServers": "./.mcp.json"
+```
 
-1. Añade un Custom Connector con URL `https://auth.closelly.com/mcp/business`.
-2. Completa OAuth como User (email + password).
+Ese archivo apunta a `https://auth.closelly.com/mcp/business` con OAuth **DCR** (`extensions.com.openai.auth.client.mode: dcr`).
+
+Flujo:
+
+1. Instala `closelly-ai-plugins`.
+2. Conecta / autoriza el connector `closelly-business` cuando el host lo pida (OAuth User email + password).
 3. Usa `/closelly` o `/LENA` (playbook `skills/mcp-business/SKILL.md`; no `/mcp/internal`).
 
-No uses `.mcp.json` ni `mcpServers` en `.codex-plugin/plugin.json` como integración de ChatGPT Web: ese archivo es para Claude Code.
+Requisitos: `business.mcp_enabled = true`. El tenant sale del token.
+
+### `.app.json` (opcional)
+
+Un mapping `connector_…` / `asdk_app_…` en `.app.json` sigue siendo opcional para el directory App de ChatGPT. **No** es necesario para que el MCP funcione vía el bundle `mcpServers`.

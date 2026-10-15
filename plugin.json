@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "closelly-ai-plugins",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Closelly MCP App: skills y connector portable para ChatGPT/Codex, Claude Code y GitHub Copilot CLI.",
   "author": {
     "name": "Closelly Edutech SpA",
@@ -29,12 +29,14 @@
         "auth": "oauth",
         "skill": "mcp-business",
         "config": "./config/mcp.business.json",
-        "claudeCodeConfig": "./.mcp.json"
+        "claudeCodeConfig": "./.mcp.json",
+        "chatgptCodexConfig": "./.mcp.json"
       },
       "remote": {
-        "enabled": false,
-        "status": "claude-code-dot-mcp-json-chatgpt-app-pending",
-        "reason": "Claude Code lee .mcp.json en la raíz (OAuth al primer uso de tools). ChatGPT App (.app.json) queda pendiente hasta tener connector_…. Claude.ai/Cowork sigue siendo connector custom manual. No hay mcpServers ni apps en .codex-plugin/plugin.json.",
+        "enabled": true,
+        "status": "chatgpt-codex-mcp-servers-bundled",
+        "reason": "ChatGPT/Codex cargan el MCP Business vía mcpServers -> ./.mcp.json (OAuth DCR). Claude Code sigue usando .mcp.json en la raíz. .app.json (connector_…) sigue opcional para directory App mapping.",
+        "config": "./.mcp.json",
         "exampleConfig": "./config/mcp.business.json"
       }
     }

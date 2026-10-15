@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Catálogo interno de Closelly MCP App para Claude Code y clientes compatibles.",
-    "version": "1.6.0"
+    "version": "1.7.0"
   },
   "plugins": [
     {
@@ -14,7 +14,7 @@
       "source": "./",
       "displayName": "Closelly MCP App",
       "description": "Closelly MCP App. Invoca con /closelly o /LENA.",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "author": {
         "name": "Closelly Edutech SpA",
         "url": "https://closelly.com"

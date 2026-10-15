@@ -5,3 +5,11 @@ interface:
 
 policy:
   allow_implicit_invocation: true
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "closelly-business"
+      description: "Closelly MCP Business (estudiantes, progreso, reportes, analytics, SENCE)"
+      transport: "streamable_http"
+      url: "https://auth.closelly.com/mcp/business"

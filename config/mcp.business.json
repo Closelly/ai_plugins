@@ -15,8 +15,28 @@
       "notes": [
         "OAuth de User (email + password). No uses InternalCredential.",
         "El tenant sale del token; no pases business_id de otro negocio.",
-        "Requiere business.mcp_enabled = true."
-      ]
+        "Requiere business.mcp_enabled = true.",
+        "Claude Code y ChatGPT/Codex usan la misma URL/OAuth; ChatGPT/Codex vía DCR en extensions.com.openai.auth.",
+        "No uses InternalCredential."
+      ],
+      "extensions": {
+        "com.openai": {
+          "auth": {
+            "type": "oauth",
+            "client": {
+              "mode": "dcr"
+            },
+            "resource": "https://auth.closelly.com/mcp/business",
+            "authorizationServerBase": "https://auth.closelly.com",
+            "baseScopes": [
+              "mcp.clients.students.read",
+              "mcp.clients.progress.read",
+              "mcp.clients.reports.read",
+              "mcp.clients.export"
+            ]
+          }
+        }
+      }
     }
   }
 }

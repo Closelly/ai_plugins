@@ -10,13 +10,33 @@
         "protectedResourceMetadata": "https://auth.closelly.com/.well-known/oauth-protected-resource/mcp/business",
         "authorizationServerMetadata": "https://auth.closelly.com/.well-known/oauth-authorization-server/mcp/business"
       },
+      "extensions": {
+        "com.openai": {
+          "auth": {
+            "type": "oauth",
+            "client": {
+              "mode": "dcr"
+            },
+            "resource": "https://auth.closelly.com/mcp/business",
+            "authorizationServerBase": "https://auth.closelly.com",
+            "baseScopes": [
+              "mcp.clients.students.read",
+              "mcp.clients.progress.read",
+              "mcp.clients.reports.read",
+              "mcp.clients.export"
+            ]
+          }
+        }
+      },
       "audience": "client-tenant",
       "skill": "mcp-business",
       "notes": [
-        "Claude Code: OAuth de User al primer uso de tools. No uses InternalCredential.",
+        "OAuth de User (email + password). No uses InternalCredential.",
         "El tenant sale del token; no pases business_id de otro negocio.",
         "Requiere business.mcp_enabled = true.",
-        "Este archivo es para Claude Code. ChatGPT/Codex no debe tratarlo como App; .app.json sigue pendiente."
+        "Claude Code: lee este archivo en la raíz; OAuth al primer uso de tools.",
+        "ChatGPT/Codex: .codex-plugin/plugin.json apunta mcpServers a este archivo (bundle portable, DCR).",
+        "Scopes PII/interactions/analytics se solicitan en el consentimiento OAuth según necesidad."
       ]
     }
   }

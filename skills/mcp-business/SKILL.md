@@ -31,14 +31,14 @@ Conectar el MCP **y** usar `/closelly` o `/LENA`. No uses este skill con `/mcp/i
 | Config portable | `config/mcp.business.json` |
 | Claude Code | `.mcp.json` en la raíz del plugin (OAuth al primer uso de tools) |
 | ChatGPT UI | `agents/openai.yaml` (display_name: Closelly MCP App) |
-| ChatGPT App | Pendiente: falta `connector_…` para `.app.json` |
+| ChatGPT/Codex MCP | Bundle: `mcpServers` → `.mcp.json` (OAuth DCR). `.app.json` opcional. |
 | Comandos | `/closelly` y `/LENA` (`commands/`) |
 
 ## Coexistencia por host
 
 | Host | Skill | Connector MCP |
 |------|-------|----------------|
-| **ChatGPT / Codex** | Closelly MCP App + `/closelly` o `/LENA` | App (`.app.json`) **pendiente**. Hasta entonces, Custom Connector manual con la URL de Business. **No** uses `.mcp.json` ni `mcpServers` en `.codex-plugin/plugin.json`. |
+| **ChatGPT / Codex** | Closelly MCP App + `/closelly` o `/LENA` | Plugin declara `mcpServers` → `.mcp.json`. Conecta `closelly-business` (OAuth DCR). `.app.json` opcional. |
 | **Claude Code** | Plugin + `/closelly` o `/LENA` | **`.mcp.json`** en la raíz: OAuth de User al primer uso de tools. |
 | **Claude.ai / Cowork** | Esta skill si está instalada | Siempre **manual**: Settings → custom connector → URL `https://auth.closelly.com/mcp/business`. El repo no puede preconfigurar Claude.ai. |
 | **GitHub Copilot CLI** | Plugin + esta skill | Añade el MCP HTTP con la misma URL y OAuth de User. |
@@ -52,7 +52,7 @@ Fuente portable: este plugin (`skills/mcp-business/`). ZIP público del backend:
 
 | Host | Cómo usar esta skill |
 |------|----------------------|
-| **ChatGPT / Codex** | Instala Closelly MCP App; usa `/closelly` o `/LENA`; connector App pendiente |
+| **ChatGPT / Codex** | Instala Closelly MCP App; conecta MCP `closelly-business`; usa `/closelly` o `/LENA` |
 | **Claude Code** | Instala el plugin; usa `/closelly` o `/LENA`; `.mcp.json` dispara OAuth |
 | **GitHub Copilot CLI** | Instala el plugin; usa esta skill como contexto del MCP Business |
 | **Cursor** | Descomprimir o `cp -r` a `~/.cursor/skills/`; conectar MCP OAuth |

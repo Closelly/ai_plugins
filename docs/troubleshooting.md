@@ -13,7 +13,7 @@ Debe existir `.mcp.json` en la raíz con `mcpServers.closelly-business.url` = `h
 
 ## ChatGPT no conecta el MCP solo
 
-Esperado. `.app.json` está pendiente (hace falta `connector_…`). Añade un Custom Connector manual. No uses `.mcp.json` como integración de ChatGPT Web.
+Desde 1.7.0 el plugin declara `mcpServers` → `.mcp.json`. Reinstala/actualiza el plugin y conecta `closelly-business` (OAuth DCR). Si aún no aparece, confirma que `.codex-plugin/plugin.json` tiene `"mcpServers": "./.mcp.json"` y reinicia ChatGPT/Codex. `.app.json` es opcional (directory App mapping).
 
 ## Claude.ai / Cowork no ve el connector
 
@@ -25,4 +25,4 @@ Reinstala o actualiza el plugin a `1.5.0`. Los comandos viven en `commands/close
 
 ## ZIP
 
-La release publica un archivo: `closelly-ai-plugins-<version>.zip`.
+El workflow de release (desde plugin.json, sin tag manual) publica: `closelly-ai-plugins-<version>.zip`.

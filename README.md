@@ -6,7 +6,7 @@ Fuente única, versionada y portable de **Closelly MCP App** para **ChatGPT/Code
 | --- | --- |
 | Nombre visible | Closelly MCP App |
 | Identificador | `closelly-ai-plugins` |
-| Versión | `1.6.0` |
+| Versión | `1.8.0` |
 | Comandos | `/closelly`, `/LENA` |
 | Skills | `skills/` (markdown + YAML de UI ChatGPT) |
 | Config | `plugin.json`, `config/*.json`, `.mcp.json` (Claude Code) |
@@ -42,18 +42,22 @@ Closelly MCP App da contexto sobre el MCP de clientes:
 - Config portable: `config/mcp.business.json`
 - Claude Code: `.mcp.json` en la raíz (OAuth al primer uso de tools)
 - ChatGPT UI: `skills/mcp-business/agents/openai.yaml` (nombre Closelly MCP App)
-- ChatGPT App (`.app.json`): **pendiente** hasta tener `connector_…`
+- ChatGPT/Codex MCP: `mcpServers` → `.mcp.json` (OAuth DCR al conectar)
+- ChatGPT App (`.app.json` / `connector_…`): opcional, no requerido para el bundle
 - Playbook: `skills/mcp-business/SKILL.md`
 
 Claude.ai / Cowork: Settings → custom connector con la misma URL (siempre manual).
 
 ## Release
 
-Una etiqueta `vX.Y.Z` publica **un** ZIP: `closelly-ai-plugins-X.Y.Z.zip`.
+El versionado vive en `plugin.json`. Al mergear a `main`, el workflow crea el GitHub Release (ZIP) **si esa versión aún no existe**. No hace falta crear un tag a mano. Detalle: [docs/release.md](docs/release.md).
+
+**Cada PR debe subir la versión** en `plugin.json` (y manifests alineados). El check `pr-version` lo valida.
 
 ## Arquitectura y mantenimiento
 
 - [Arquitectura](docs/architecture.md)
+- [Release](docs/release.md)
 - [MCP Business](docs/mcp-remote.md)
 - [Solución de problemas](docs/troubleshooting.md)
 - [Seguridad](SECURITY.md)

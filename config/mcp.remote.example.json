@@ -9,6 +9,24 @@
         "login": "https://auth.closelly.com/oauth/login",
         "protectedResourceMetadata": "https://auth.closelly.com/.well-known/oauth-protected-resource/mcp/business",
         "authorizationServerMetadata": "https://auth.closelly.com/.well-known/oauth-authorization-server/mcp/business"
+      },
+      "extensions": {
+        "com.openai": {
+          "auth": {
+            "type": "oauth",
+            "client": {
+              "mode": "dcr"
+            },
+            "resource": "https://auth.closelly.com/mcp/business",
+            "authorizationServerBase": "https://auth.closelly.com",
+            "baseScopes": [
+              "mcp.clients.students.read",
+              "mcp.clients.progress.read",
+              "mcp.clients.reports.read",
+              "mcp.clients.export"
+            ]
+          }
+        }
       }
     }
   }

@@ -1,6 +1,28 @@
 # Changelog
 
-El versionado sigue [Semantic Versioning](https://semver.org/).
+El versionado sigue [Semantic Versioning](https://semver.org/).## 1.8.0 - 2026-10-15
+
+### Added
+
+- Icono Closelly: `assets/logo.png`, `assets/icon.png`, `assets/logo-dark.png`, `assets/icon-small.png`.
+- Claude: campo `icon` en `.claude-plugin/plugin.json`.
+- ChatGPT/Codex: `logo`, `logoDark`, `composerIcon`, `brandColor` en `.codex-plugin/plugin.json` y skill `openai.yaml`.
+- Release automático desde `plugin.json` al push a `main` (sin crear tag manual): verifica que no exista el release y publica el ZIP.
+- Check de PR `pr-version`: falla si la versión en `plugin.json` no cambió respecto a `main`.
+- Documentación del flujo en `docs/release.md`.
+
+## 1.7.0 - 2026-10-15
+
+### Added
+
+- ChatGPT/Codex: `"mcpServers": "./.mcp.json"` en `.codex-plugin/plugin.json` para conectar el MCP Business al instalar el plugin (opción bundle portable).
+- Auth OpenAI en `.mcp.json`: `extensions.com.openai.auth` with `client.mode: dcr` (el AS de Closelly expone `registration_endpoint`).
+- `dependencies.tools` del MCP en `skills/mcp-business/agents/openai.yaml`.
+
+### Changed
+
+- `extensions.com.closelly.mcp.remote.enabled` pasa a `true` con status `chatgpt-codex-mcp-servers-bundled`.
+- Docs de coexistencia: ChatGPT/Codex ya no exigen Custom Connector manual ni `.app.json` para usar el MCP; `.app.json` queda opcional.
 
 ## 1.6.0 - 2026-10-14
 

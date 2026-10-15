@@ -1,6 +1,13 @@
 # Changelog
 
-El versionado sigue [Semantic Versioning](https://semver.org/).
+El versionado sigue [Semantic Versioning](https://semver.org/).## 1.8.0 - 2026-10-15
+
+### Added
+
+- Release automático desde `plugin.json` al push a `main` (sin crear tag manual): verifica que no exista el release y publica el ZIP.
+- Check de PR `pr-version`: falla si la versión en `plugin.json` no cambió respecto a `main`.
+- Documentación del flujo en `docs/release.md`.
+
 ## 1.7.0 - 2026-10-15
 
 ### Added

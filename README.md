@@ -6,7 +6,7 @@ Fuente única, versionada y portable de **Closelly MCP App** para **ChatGPT/Code
 | --- | --- |
 | Nombre visible | Closelly MCP App |
 | Identificador | `closelly-ai-plugins` |
-| Versión | `1.7.0` |
+| Versión | `1.8.0` |
 | Comandos | `/closelly`, `/LENA` |
 | Skills | `skills/` (markdown + YAML de UI ChatGPT) |
 | Config | `plugin.json`, `config/*.json`, `.mcp.json` (Claude Code) |
@@ -50,11 +50,14 @@ Claude.ai / Cowork: Settings → custom connector con la misma URL (siempre manu
 
 ## Release
 
-Una etiqueta `vX.Y.Z` publica **un** ZIP: `closelly-ai-plugins-X.Y.Z.zip`.
+El versionado vive en `plugin.json`. Al mergear a `main`, el workflow crea el GitHub Release (ZIP) **si esa versión aún no existe**. No hace falta crear un tag a mano. Detalle: [docs/release.md](docs/release.md).
+
+**Cada PR debe subir la versión** en `plugin.json` (y manifests alineados). El check `pr-version` lo valida.
 
 ## Arquitectura y mantenimiento
 
 - [Arquitectura](docs/architecture.md)
+- [Release](docs/release.md)
 - [MCP Business](docs/mcp-remote.md)
 - [Solución de problemas](docs/troubleshooting.md)
 - [Seguridad](SECURITY.md)

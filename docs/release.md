@@ -6,7 +6,7 @@ No hace falta crear ni pushear un tag a mano para publicar. El workflow de relea
 
 ## Regla de PRs (obligatoria)
 
-**Cada PR debe incrementar la versión** del plugin respecto a la rama base (`main`).
+**Cada PR debe incrementar la versión una sola vez** respecto a la rama base (`main`). No hace falta subir la versión en cada commit del mismo PR: el check compara la versión final del PR contra `main`.
 
 1. Sube `version` en `plugin.json` (p. ej. `1.7.0` → `1.8.0`).
 2. Alinea la misma versión en:

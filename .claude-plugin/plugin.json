@@ -20,5 +20,6 @@
     "claude-code",
     "github-copilot"
   ],
-  "commands": "./commands/"
+  "commands": "./commands/",
+  "icon": "./assets/logo.png"
 }

@@ -4,6 +4,9 @@ El versionado sigue [Semantic Versioning](https://semver.org/).## 1.8.0 - 2026-1
 
 ### Added
 
+- Icono Closelly: `assets/logo.png`, `assets/icon.png`, `assets/logo-dark.png`, `assets/icon-small.png`.
+- Claude: campo `icon` en `.claude-plugin/plugin.json`.
+- ChatGPT/Codex: `logo`, `logoDark`, `composerIcon`, `brandColor` en `.codex-plugin/plugin.json` y skill `openai.yaml`.
 - Release automático desde `plugin.json` al push a `main` (sin crear tag manual): verifica que no exista el release y publica el ZIP.
 - Check de PR `pr-version`: falla si la versión en `plugin.json` no cambió respecto a `main`.
 - Documentación del flujo en `docs/release.md`.

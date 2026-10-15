@@ -31,7 +31,11 @@
     "defaultPrompt": [
       "/closelly consulta estudiantes, cursos, progreso y analytics del tenant Closelly.",
       "/LENA consulta estudiantes, cursos, progreso y analytics del tenant Closelly."
-    ]
+    ],
+    "brandColor": "#7C3AED",
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png",
+    "logoDark": "./assets/logo-dark.png"
   },
   "mcpServers": "./.mcp.json"
 }

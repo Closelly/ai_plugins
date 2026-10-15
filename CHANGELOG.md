@@ -16,7 +16,7 @@ El versionado sigue [Semantic Versioning](https://semver.org/).## 1.8.0 - 2026-1
 ### Added
 
 - ChatGPT/Codex: `"mcpServers": "./.mcp.json"` en `.codex-plugin/plugin.json` para conectar el MCP Business al instalar el plugin (opción bundle portable).
-- Auth OpenAI en `.mcp.json`: `extensions.com.openai.auth` con `client.mode: dcr` (el AS de Closelly expone `registration_endpoint`).
+- Auth OpenAI en `.mcp.json`: `extensions.com.openai.auth` with `client.mode: dcr` (el AS de Closelly expone `registration_endpoint`).
 - `dependencies.tools` del MCP en `skills/mcp-business/agents/openai.yaml`.
 
 ### Changed

@@ -1,6 +1,6 @@
 {
   "name": "closelly-ai-plugins",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Closelly MCP App: skills y connector portable para ChatGPT/Codex, Claude Code y GitHub Copilot CLI.",
   "author": {
     "name": "Closelly Edutech SpA",
@@ -37,5 +37,5 @@
     "logo": "./assets/logo.png",
     "logoDark": "./assets/logo-dark.png"
   },
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./mcp.json"
 }

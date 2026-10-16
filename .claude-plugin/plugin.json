@@ -1,7 +1,7 @@
 {
   "name": "closelly-ai-plugins",
   "displayName": "Closelly MCP App",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Closelly MCP App. Invoca con /closelly o /LENA.",
   "author": {
     "name": "Closelly Edutech SpA",
@@ -20,6 +20,8 @@
     "claude-code",
     "github-copilot"
   ],
+  "skills": "./skills/",
   "commands": "./commands/",
+  "mcpServers": "./.mcp.json",
   "icon": "./assets/logo.png"
 }

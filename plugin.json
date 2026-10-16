@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "closelly-ai-plugins",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Closelly MCP App: skills y connector portable para ChatGPT/Codex, Claude Code y GitHub Copilot CLI.",
   "author": {
     "name": "Closelly Edutech SpA",
@@ -21,22 +21,40 @@
     "github-copilot"
   ],
   "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Closelly MCP App",
+        "shortDescription": "Consulta estudiantes, cursos, progreso y analytics de Closelly",
+        "longDescription": "Closelly MCP App. Invoca con /closelly o /LENA. Connector MCP Business en https://auth.closelly.com/mcp/business.",
+        "developerName": "Closelly Edutech SpA",
+        "category": "Productivity",
+        "websiteURL": "https://closelly.com",
+        "defaultPrompt": [
+          "/closelly consulta estudiantes, cursos, progreso y analytics del tenant Closelly.",
+          "/LENA consulta estudiantes, cursos, progreso y analytics del tenant Closelly."
+        ],
+        "brandColor": "#7C3AED",
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/logo.png",
+        "logoDark": "./assets/logo-dark.png"
+      }
+    },
     "com.closelly.mcp": {
       "business": {
         "name": "closelly-business",
         "url": "https://auth.closelly.com/mcp/business",
-        "transport": "http",
+        "transport": "streamable-http",
         "auth": "oauth",
         "skill": "mcp-business",
         "config": "./config/mcp.business.json",
         "claudeCodeConfig": "./.mcp.json",
-        "chatgptCodexConfig": "./.mcp.json"
+        "chatgptCodexConfig": "./mcp.json"
       },
       "remote": {
         "enabled": true,
-        "status": "chatgpt-codex-mcp-servers-bundled",
-        "reason": "ChatGPT/Codex cargan el MCP Business vía mcpServers -> ./.mcp.json (OAuth DCR). Claude Code sigue usando .mcp.json en la raíz. .app.json (connector_…) sigue opcional para directory App mapping.",
-        "config": "./.mcp.json",
+        "status": "chatgpt-codex-mcp-json-portable",
+        "reason": "ChatGPT/Codex cargan el MCP Business vía mcp.json portable (Agent Plugins) con OAuth DCR. Claude Code sigue usando .mcp.json en la raíz. .app.json (connector_…) sigue opcional para directory App mapping.",
+        "config": "./mcp.json",
         "exampleConfig": "./config/mcp.business.json"
       }
     }

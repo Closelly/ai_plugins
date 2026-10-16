@@ -11,9 +11,18 @@
 
 Debe existir `.mcp.json` en la raíz con `mcpServers.closelly-business.url` = `https://auth.closelly.com/mcp/business`. Reinstala el plugin y usa una tool; el consentimiento OAuth ocurre al primer uso.
 
-## ChatGPT no conecta el MCP solo
+## ChatGPT no conecta el MCP solo (solo carga Skills)
 
-Desde 1.7.0 el plugin declara `mcpServers` → `.mcp.json`. Reinstala/actualiza el plugin y conecta `closelly-business` (OAuth DCR). Si aún no aparece, confirma que `.codex-plugin/plugin.json` tiene `"mcpServers": "./.mcp.json"` y reinicia ChatGPT/Codex. `.app.json` es opcional (directory App mapping).
+Causa típica (pre-1.9.0): faltaba el entrypoint portable **`mcp.json`** en la raíz; el host cargaba Skills pero ignoraba `.mcp.json` (shape Claude).
+
+Desde **1.9.0**:
+
+1. Debe existir `mcp.json` en la raíz (`type: streamable-http` + OAuth DCR).
+2. `.codex-plugin/plugin.json` debe tener `"mcpServers": "./mcp.json"`.
+3. Reinstala/actualiza el marketplace (`codex plugin marketplace upgrade closelly-ai-plugins`) y reinicia ChatGPT/Codex.
+4. Conecta / autoriza el connector `closelly-business` cuando el host lo pida.
+
+`.app.json` sigue siendo opcional (directory App mapping).
 
 ## Claude.ai / Cowork no ve el connector
 

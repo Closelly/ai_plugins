@@ -1,6 +1,21 @@
 # Changelog
 
-El versionado sigue [Semantic Versioning](https://semver.org/).## 1.8.0 - 2026-10-15
+El versionado sigue [Semantic Versioning](https://semver.org/).
+
+## 1.9.0 - 2026-10-16
+
+### Fixed
+
+- ChatGPT/Codex marketplace: el install solo cargaba skills porque faltaba el entrypoint portable `mcp.json` (Agent Plugins). Ahora el MCP Business se declara en `mcp.json` con `type: streamable-http` y OAuth DCR.
+- Claude Code: `.claude-plugin/plugin.json` y el marketplace declaran explícitamente `mcpServers: ./.mcp.json` y `skills`.
+
+### Changed
+
+- `.codex-plugin/plugin.json` apunta `mcpServers` a `./mcp.json`.
+- `config/mcp.business.json` alineado al shape portable (`streamable-http` + `extensions.com.openai.auth`).
+- `plugin.json` incluye `extensions.com.openai.interface` para hosts portables.
+
+## 1.8.0 - 2026-10-15
 
 ### Added
 

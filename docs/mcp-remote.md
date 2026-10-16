@@ -7,8 +7,8 @@ Este plugin documenta y conecta el **MCP Business** de Closelly.
 | Archivo | Host | Estado |
 | --- | --- |
 | `.mcp.json` | Claude Code | Publicado. OAuth al primer uso de tools. |
-| `.mcp.json` vía `mcpServers` en `.codex-plugin/plugin.json` | ChatGPT / Codex | Publicado. OAuth DCR al conectar. |
-| `config/mcp.business.json` | Documentación portable | Publicado. Misma URL/OAuth (+ auth OpenAI). |
+| `mcp.json` vía `mcpServers` en `.codex-plugin/plugin.json` | ChatGPT / Codex | Publicado (1.9.0+). `streamable-http` + OAuth DCR. |
+| `config/mcp.business.json` | Documentación portable | Publicado. Alineado a `mcp.json`. |
 | `skills/mcp-business/agents/openai.yaml` | ChatGPT / Codex UI | Publicado. Incluye `dependencies.tools`. |
 | `commands/closelly.md`, `commands/LENA.md` | `/closelly`, `/LENA` | Publicado. |
 | `.app.json` + `"apps"` | ChatGPT App directory mapping | **Opcional** (`connector_…`). |
@@ -26,7 +26,7 @@ Este plugin documenta y conecta el **MCP Business** de Closelly.
 | Login | `https://auth.closelly.com/oauth/login` |
 | ChatGPT/Codex client registration | DCR (`registration_endpoint` del AS) |
 | Skill | `skills/mcp-business/` |
-| Config | `.mcp.json` / `config/mcp.business.json` |
+| Config | `mcp.json` (ChatGPT/Codex) / `.mcp.json` (Claude Code) / `config/mcp.business.json` |
 
 El tenant sale del token; no se pasa `business_id` de otro negocio. Requiere `business.mcp_enabled = true`.
 

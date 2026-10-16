@@ -35,7 +35,7 @@
         "El tenant sale del token; no pases business_id de otro negocio.",
         "Requiere business.mcp_enabled = true.",
         "Claude Code: lee este archivo en la raíz; OAuth al primer uso de tools.",
-        "ChatGPT/Codex: .codex-plugin/plugin.json apunta mcpServers a este archivo (bundle portable, DCR).",
+        "ChatGPT/Codex: usan mcp.json portable (streamable-http + DCR). Este archivo es para Claude Code.",
         "Scopes PII/interactions/analytics se solicitan en el consentimiento OAuth según necesidad."
       ]
     }

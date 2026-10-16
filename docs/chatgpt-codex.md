@@ -42,18 +42,18 @@ El workflow de release (desde plugin.json, sin tag manual) publica: `closelly-ai
 
 ## MCP Business (bundle portable)
 
-Al instalar el plugin, ChatGPT/Codex cargan el MCP Business porque `.codex-plugin/plugin.json` declara:
+Al instalar el plugin, ChatGPT/Codex cargan el MCP Business porque el paquete portable incluye **`mcp.json`** en la raíz (Agent Plugins) y `.codex-plugin/plugin.json` declara:
 
 ```json
-"mcpServers": "./.mcp.json"
+"mcpServers": "./mcp.json"
 ```
 
-Ese archivo apunta a `https://auth.closelly.com/mcp/business` con OAuth **DCR** (`extensions.com.openai.auth.client.mode: dcr`).
+Ese archivo apunta a `https://auth.closelly.com/mcp/business` con transporte **`streamable-http`** y OAuth **DCR** (`extensions.com.openai.auth.client.mode: dcr`).
 
 Flujo:
 
-1. Instala `closelly-ai-plugins`.
-2. Conecta / autoriza el connector `closelly-business` cuando el host lo pida (OAuth User email + password).
+1. Instala `closelly-ai-plugins` (o reinstálalo tras actualizar el marketplace).
+2. Conecta / autoriza el connector `closelly-business` cuando el host lo pida (OAuth User email + password). Si solo ves Skills y no el connector, confirma que existe `mcp.json` en la raíz del plugin.
 3. Usa `/closelly` o `/LENA` (playbook `skills/mcp-business/SKILL.md`; no `/mcp/internal`).
 
 Requisitos: `business.mcp_enabled = true`. El tenant sale del token.

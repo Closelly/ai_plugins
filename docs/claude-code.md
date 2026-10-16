@@ -42,7 +42,7 @@ El workflow de release (desde plugin.json, sin tag manual) publica: `closelly-ai
 
 ## MCP Business
 
-Claude Code lee **`.mcp.json`** en la raíz del plugin (mismo payload que `config/mcp.business.json`):
+Claude Code lee **`.mcp.json`** en la raíz del plugin (`.claude-plugin/plugin.json` y el marketplace declaran `mcpServers: ./.mcp.json`). ChatGPT/Codex usan el portable `mcp.json` (`streamable-http`); no confundir ambos archivos:
 
 - URL: `https://auth.closelly.com/mcp/business`
 - Auth: OAuth de User (email + password), no InternalCredential

@@ -26,38 +26,14 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p assets skills/mcp-business/assets
-
-          assemble() {
-            local name="$1"
-            local dest="assets/$name"
-            local src="assets/.staging/${name}.b64"
-            local p1="assets/.staging/${name}.b64.part1"
-            local p2="assets/.staging/${name}.b64.part2"
-            if [ -f "$src" ]; then
-              base64 -d "$src" > "$dest"
-            elif [ -f "$p1" ] && [ -f "$p2" ]; then
-              cat "$p1" "$p2" | base64 -d > "$dest"
-            elif [ "$name" = "logo-dark.png" ]; then
-              # reuse logo bytes
-              if [ -f assets/logo.png ]; then
-                cp assets/logo.png "$dest"
-                return
-              fi
-              echo "missing source for $name" >&2
-              exit 1
-            else
-              echo "missing staging for $name" >&2
-              exit 1
-            fi
-            file "$dest" | grep -q "PNG image"
-            cp "$dest" "skills/mcp-business/assets/$name"
-            echo "OK $name ($(wc -c < "$dest") bytes)"
-          }
-
-          assemble logo.png
-          assemble logo-dark.png
-          assemble icon.png
-          assemble icon-small.png
+          for name in logo.png logo-dark.png icon.png icon-small.png; do
+            src="assets/.staging/${name}.b64"
+            test -f "$src"
+            base64 -d "$src" > "assets/$name"
+            cp "assets/$name" "skills/mcp-business/assets/$name"
+            file "assets/$name" | grep -q "PNG image"
+            echo "OK $name ($(wc -c < "assets/$name") bytes)"
+          done
 
       - name: Commit binary assets and remove staging
         run: |
@@ -65,18 +41,19 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           rm -rf assets/.staging
+          rm -f assets/.test
           rm -f .github/workflows/materialize-brand-assets.yml
           git add -A assets skills/mcp-business/assets
-          git add -u .github/workflows/materialize-brand-assets.yml || true
+          git add -u .github/workflows/materialize-brand-assets.yml assets/.test || true
           if git diff --cached --quiet; then
             echo "Nothing to commit"
             exit 0
           fi
           git commit -m "$(cat <<'EOF'
-          feat(branding): materialize Closelly PNG logo assets
+          feat(branding): materialize Closelly colorful PNG assets
 
-          - Decode staged base64 into real PNG binaries
-          - Mirror assets under skills/mcp-business/assets
+          - Replace white/non-square logo with colorful square mark
+          - Mirror under skills/mcp-business/assets
           - Remove one-shot staging workflow
           EOF
           )"

@@ -14,5 +14,5 @@ dependencies:
     - type: "mcp"
       value: "closelly-business"
       description: "Closelly MCP Business (estudiantes, progreso, reportes, analytics, SENCE)"
-      transport: "streamable_http"
+      transport: "http"
       url: "https://auth.closelly.com/mcp/business"

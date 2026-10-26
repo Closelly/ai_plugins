@@ -40,24 +40,26 @@ Quita también el plugin de `~/.codex/config.toml` si quedó habilitado.
 
 El workflow de release (desde plugin.json, sin tag manual) publica: `closelly-ai-plugins-<version>.zip`.
 
-## MCP Business (bundle portable)
+## MCP Business (bundle Codex / ChatGPT)
 
-Al instalar el plugin, ChatGPT/Codex cargan el MCP Business porque el paquete portable incluye **`mcp.json`** en la raíz (Agent Plugins) y `.codex-plugin/plugin.json` declara:
+Al instalar el plugin, ChatGPT/Codex deben cargar el MCP Business porque:
 
-```json
-"mcpServers": "./mcp.json"
-```
-
-Ese archivo apunta a `https://auth.closelly.com/mcp/business` con transporte **`streamable-http`** y OAuth **DCR** (`extensions.com.openai.auth.client.mode: dcr`).
+1. Root `plugin.json` declara **`extensions.com.openai.mcpServers": "./.mcp.json"`** (obligatorio: si solo existe `interface` en `extensions.com.openai`, ese objeto **reemplaza** todo el overlay `.codex-plugin/plugin.json` y se pierde el MCP).
+2. `.codex-plugin/plugin.json` también declara `"mcpServers": "./.mcp.json"` (fallback si no hay overlay inline).
+3. `.mcp.json` usa el shape de plugins oficiales OpenAI: `"type": "http"`, `url`, `oauth_resource` + OAuth DCR.
 
 Flujo:
 
-1. Instala `closelly-ai-plugins` (o reinstálalo tras actualizar el marketplace).
-2. Conecta / autoriza el connector `closelly-business` cuando el host lo pida (OAuth User email + password). Si solo ves Skills y no el connector, confirma que existe `mcp.json` en la raíz del plugin.
-3. Usa `/closelly` o `/LENA` (playbook `skills/mcp-business/SKILL.md`; no `/mcp/internal`).
+1. Instala o **reinstala** `closelly-ai-plugins` (tras 1.10.0).
+2. Con `policy.authentication: ON_INSTALL`, el host debe pedir OAuth del connector `closelly-business`.
+3. Usa `/closelly` o `/LENA`.
 
 Requisitos: `business.mcp_enabled = true`. El tenant sale del token.
 
-### `.app.json` (opcional)
+### Icono del plugin
 
-Un mapping `connector_…` / `asdk_app_…` en `.app.json` sigue siendo opcional para el directory App de ChatGPT. **No** es necesario para que el MCP funcione vía el bundle `mcpServers`.
+`interface.logo` / `composerIcon` apuntan a PNG cuadrados coloridos en `assets/` (`logo.png` 512×512, `icon.png` 256×256). Un `logo.png` blanco o no cuadrado deja el avatar del marketplace en blanco.
+
+### `.app.json` (opcional, directory App)
+
+Los plugins del directorio público de OpenAI suelen mapear un `asdk_app_…` / `connector_…` en `.app.json`. Eso solo aplica si ya registraste el MCP una vez en ChatGPT (Plugins → Add custom MCP) y obtuviste el ID técnico. **No** es necesario para que el bundle `mcpServers` conecte el MCP en un marketplace de repo; sí puede hacer aparecer una fila “App” aparte en el directory oficial.

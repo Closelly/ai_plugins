@@ -2,8 +2,9 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
   "mcpServers": {
     "closelly-business": {
-      "type": "streamable-http",
+      "type": "http",
       "url": "https://auth.closelly.com/mcp/business",
+      "oauth_resource": "https://auth.closelly.com/mcp/business",
       "extensions": {
         "com.openai": {
           "auth": {

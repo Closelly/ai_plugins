@@ -4,6 +4,7 @@
     "closelly-business": {
       "type": "http",
       "url": "https://auth.closelly.com/mcp/business",
+      "oauth_resource": "https://auth.closelly.com/mcp/business",
       "auth": {
         "type": "oauth",
         "login": "https://auth.closelly.com/oauth/login",
@@ -27,17 +28,7 @@
             ]
           }
         }
-      },
-      "audience": "client-tenant",
-      "skill": "mcp-business",
-      "notes": [
-        "OAuth de User (email + password). No uses InternalCredential.",
-        "El tenant sale del token; no pases business_id de otro negocio.",
-        "Requiere business.mcp_enabled = true.",
-        "Claude Code: lee este archivo en la raíz; OAuth al primer uso de tools.",
-        "ChatGPT/Codex: usan mcp.json portable (streamable-http + DCR). Este archivo es para Claude Code.",
-        "Scopes PII/interactions/analytics se solicitan en el consentimiento OAuth según necesidad."
-      ]
+      }
     }
   }
 }

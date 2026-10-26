@@ -2,6 +2,19 @@
 
 El versionado sigue [Semantic Versioning](https://semver.org/).
 
+## 1.10.0 - 2026-10-26
+
+### Fixed
+
+- ChatGPT marketplace: el avatar quedaba en blanco porque `assets/logo.png` era un PNG blanco no cuadrado. Ahora `logo.png` / `icon.png` / `icon-small.png` / `logo-dark.png` son el mark colorido cuadrado.
+- ChatGPT/Codex: el MCP no se cableaba al instalar porque `extensions.com.openai` en root `plugin.json` solo tenía `interface` y **reemplaza** el overlay `.codex-plugin` (se perdía `mcpServers`). Ahora declara `"mcpServers": "./.mcp.json"` dentro de `extensions.com.openai`.
+- Alinea `.mcp.json` / `mcp.json` al shape de plugins oficiales OpenAI (`type: http` + `oauth_resource` + OAuth DCR).
+
+### Changed
+
+- Versión 1.10.0 en manifests y marketplaces.
+- Docs `chatgpt-codex.md` y `troubleshooting.md` con la regla del overlay OpenAI y el requisito de logo cuadrado colorido.
+
 ## 1.9.0 - 2026-10-16
 
 ### Fixed

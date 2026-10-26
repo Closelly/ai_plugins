@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "closelly-ai-plugins",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "description": "Closelly MCP App: skills y connector portable para ChatGPT/Codex, Claude Code y GitHub Copilot CLI.",
   "author": {
     "name": "Closelly Edutech SpA",
@@ -22,12 +22,16 @@
   ],
   "extensions": {
     "com.openai": {
+      "mcpServers": "./.mcp.json",
       "interface": {
         "displayName": "Closelly MCP App",
         "shortDescription": "Consulta estudiantes, cursos, progreso y analytics de Closelly",
         "longDescription": "Closelly MCP App. Invoca con /closelly o /LENA. Connector MCP Business en https://auth.closelly.com/mcp/business.",
         "developerName": "Closelly Edutech SpA",
         "category": "Productivity",
+        "capabilities": [
+          "Read"
+        ],
         "websiteURL": "https://closelly.com",
         "defaultPrompt": [
           "/closelly consulta estudiantes, cursos, progreso y analytics del tenant Closelly.",
@@ -43,18 +47,18 @@
       "business": {
         "name": "closelly-business",
         "url": "https://auth.closelly.com/mcp/business",
-        "transport": "streamable-http",
+        "transport": "http",
         "auth": "oauth",
         "skill": "mcp-business",
         "config": "./config/mcp.business.json",
         "claudeCodeConfig": "./.mcp.json",
-        "chatgptCodexConfig": "./mcp.json"
+        "chatgptCodexConfig": "./.mcp.json"
       },
       "remote": {
         "enabled": true,
-        "status": "chatgpt-codex-mcp-json-portable",
-        "reason": "ChatGPT/Codex cargan el MCP Business vía mcp.json portable (Agent Plugins) con OAuth DCR. Claude Code sigue usando .mcp.json en la raíz. .app.json (connector_…) sigue opcional para directory App mapping.",
-        "config": "./mcp.json",
+        "status": "chatgpt-codex-mcp-servers-in-openai-extension",
+        "reason": "ChatGPT/Codex usan extensions.com.openai.mcpServers -> ./.mcp.json (type http + OAuth DCR). Claude Code usa .mcp.json. mcp.json portable se mantiene como mirror Agent Plugins.",
+        "config": "./.mcp.json",
         "exampleConfig": "./config/mcp.business.json"
       }
     }

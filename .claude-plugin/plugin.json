@@ -1,7 +1,7 @@
 {
   "name": "closelly-ai-plugins",
   "displayName": "Closelly MCP App",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "description": "Closelly MCP App. Invoca con /closelly o /LENA.",
   "author": {
     "name": "Closelly Edutech SpA",

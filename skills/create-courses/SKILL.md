@@ -39,4 +39,4 @@ Skill de autoría para Closelly MCP App. Requiere connector `/mcp/business` y pe
 
 Ver `references/authoring-contract.md` y el playbook `skills/mcp-business/`.
 
-Scopes de escritura (no base): `mcp.clients.courses.create|update|activities.write|publish|unpublish`.
+Scopes de escritura (no van): `mcp.clients.courses.create|update|activities.write|publish|unpublish`.

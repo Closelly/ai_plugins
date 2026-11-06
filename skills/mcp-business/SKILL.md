@@ -4,7 +4,7 @@ description: Playbook de Closelly MCP App (connector /mcp/business). Invoca con 
 license: MIT
 metadata:
   plugin_name: closelly-ai-plugins
-  plugin_version: "1.6.0"
+  plugin_version: "1.11.0"
   plugin_display_name: Closelly MCP App
   mcp_server: closelly-business
   mcp_url: https://auth.closelly.com/mcp/business
@@ -33,6 +33,17 @@ Conectar el MCP **y** usar `/closelly` o `/LENA`. No uses este skill con `/mcp/i
 | ChatGPT UI | `agents/openai.yaml` (display_name: Closelly MCP App) |
 | ChatGPT/Codex MCP | Bundle: `mcpServers` → `.mcp.json` (OAuth DCR). `.app.json` opcional. |
 | Comandos | `/closelly` y `/LENA` (`commands/`) |
+
+
+
+## Autoría de cursos
+
+Si el usuario pide crear, editar, publicar o despublicar cursos, usa además la skill `skills/create-courses/SKILL.md`.
+
+1. Llama `get_course_authoring_capabilities`.
+2. Si `write_enabled` es false o faltan acciones, explica el bloqueo (switch de empresa + permisos personales + scopes).
+3. No solicites scopes de escritura automáticamente en el connector base.
+4. Despublicación solo con OTP humano (`request_course_unpublish_code` → código del correo → `unpublish_course`).
 
 ## Coexistencia por host
 

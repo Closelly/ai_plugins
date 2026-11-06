@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.11.0
+
+- Nueva skill `create-courses` para autoría MCP Business (crear/editar/publicar/despublicar con OTP).
+- Playbook `mcp-business` y comandos `/closelly` / `/LENA` enlazan el flujo de autoría.
+- El prompt canónico del diseñador instruccional sigue pendiente; la skill no inventa un sustituto.
+
+
 El versionado sigue [Semantic Versioning](https://semver.org/).
 
 ## 1.10.0 - 2026-10-26
@@ -83,7 +90,7 @@ El versionado sigue [Semantic Versioning](https://semver.org/).
 ### Changed
 
 - Documentación de coexistencia: ChatGPT App (`.app.json`) queda pendiente; Claude.ai/Cowork sigue siendo connector custom manual; Claude Code usa `.mcp.json`.
-- `extensions.com.closelly.mcp.remote.enabled` permanece `false` (no hay `mcpServers` ni apps en `.codex-plugin/plugin.json`).
+- `extensions.com.closelly.mcp.remote.enabled` permanece `false` (sin auto-activar `mcp.json`).
 
 ## 1.3.0 - 2026-09-02
 

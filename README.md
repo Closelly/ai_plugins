@@ -6,9 +6,9 @@ Fuente única, versionada y portable de **Closelly MCP App** para **ChatGPT/Code
 | --- | --- |
 | Nombre visible | Closelly MCP App |
 | Identificador | `closelly-ai-plugins` |
-| Versión | `1.9.0` |
+| Versión | `1.11.0` |
 | Comandos | `/closelly`, `/LENA` |
-| Skills | `skills/` (markdown + YAML de UI ChatGPT) |
+| Skills | `skills/mcp-business` (consulta), `skills/create-courses` (autoría de cursos) |
 | Config | `plugin.json`, `mcp.json` (ChatGPT/Codex), `.mcp.json` (Claude Code), `config/*.json` |
 | MCP Business | `https://auth.closelly.com/mcp/business` (OAuth) |
 
@@ -45,8 +45,19 @@ Closelly MCP App da contexto sobre el MCP de clientes:
 - ChatGPT/Codex MCP: `mcpServers` → `mcp.json` portable (`streamable-http` + OAuth DCR)
 - ChatGPT App (`.app.json` / `connector_…`): opcional, no requerido para el bundle
 - Playbook: `skills/mcp-business/SKILL.md`
+- Autoría de cursos: `skills/create-courses/SKILL.md` (ver sección siguiente)
 
 Claude.ai / Cowork: Settings → custom connector con la misma URL (siempre manual).
+
+## Crear cursos (`create-courses`)
+
+Skill portable para crear, editar, validar, publicar y despublicar cursos vía MCP Business. Invoca con `/closelly` o `/LENA` (p. ej. "crea un curso ...").
+
+- Descubre primero `get_course_authoring_capabilities` y `get_course_authoring_schema`; no inventa tools ni campos.
+- **Scopes opcionales** (no están en los base; requieren consentimiento explícito al conectar): `mcp.clients.courses.create`, `mcp.clients.courses.update`, `mcp.clients.courses.activities.write`, `mcp.clients.courses.publish`, `mcp.clients.courses.unpublish`. La conexión OAuth y los scopes base de lectura no cambian.
+- Despublicar exige un código OTP que **entrega una persona**; el skill nunca lo busca en Gmail/Docs ni en otra fuente.
+- No elimina cursos ni matricula usuarios.
+- **Pendiente:** el prompt canónico del diseñador instruccional (Luis) aún no está incluido; el skill solo trae el flujo operativo y un marcador para insertarlo.
 
 ## Release
 

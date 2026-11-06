@@ -25,7 +25,7 @@ Este plugin documenta y conecta el **MCP Business** de Closelly.
 | Auth | OAuth 2.0 (User email + password) |
 | Login | `https://auth.closelly.com/oauth/login` |
 | ChatGPT/Codex client registration | DCR (`registration_endpoint` del AS) |
-| Skill | `skills/mcp-business/` |
+| Skill | `skills/mcp-business/` (consulta), `skills/create-courses/` (autoría) |
 | Config | `mcp.json` (ChatGPT/Codex) / `.mcp.json` (Claude Code) / `config/mcp.business.json` |
 
 El tenant sale del token; no se pasa `business_id` de otro negocio. Requiere `business.mcp_enabled = true`.
@@ -41,3 +41,17 @@ La plantilla copiable está también en `config/mcp.remote.example.json`. No cop
 5. Usa `/closelly` o `/LENA`. Playbook: `skills/mcp-business/SKILL.md`.
 
 Cuando exista un `connector_…` de ChatGPT Directory, se puede añadir `.app.json` + `"apps"` como mapping adicional sin quitar el bundle `mcpServers`.
+
+## Scopes opcionales de autoría de cursos
+
+`baseScopes` (`.mcp.json`, `mcp.json`, `config/mcp.business.json`) siguen siendo solo lectura/export y **no** se modifican. Los scopes de escritura del skill `create-courses` son opcionales y requieren consentimiento explícito del usuario/admin:
+
+| Scope | Uso |
+| --- | --- |
+| `mcp.clients.courses.create` | Crear cursos |
+| `mcp.clients.courses.update` | Editar cursos, secciones y orden |
+| `mcp.clients.courses.activities.write` | Crear/editar actividades y vincularlas a cursos |
+| `mcp.clients.courses.publish` | Validar y publicar actividades/cursos |
+| `mcp.clients.courses.unpublish` | Solicitar código y despublicar (OTP humano) |
+
+El plugin no los solicita automáticamente. Se listan en `plugin.json` → `extensions.com.closelly.mcp.business.optionalScopes` solo como documentación.

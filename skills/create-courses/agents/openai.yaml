@@ -1,0 +1,4 @@
+interface:
+  display_name: "Crear cursos Closelly"
+  short_description: "Autoría de cursos con MCP Business y OTP para despublicar"
+  default_prompt: "Ayúdame a crear o gestionar un curso en Closelly con el flujo MCP Business."

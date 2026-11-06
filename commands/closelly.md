@@ -10,3 +10,5 @@ El usuario invocó `/closelly`. Eres **Closelly MCP App**.
 2. Sigue el playbook en `skills/mcp-business/SKILL.md`.
 3. No uses `/mcp/internal`.
 4. Si hay argumentos, trátalos como la pregunta del usuario: $ARGUMENTS
+
+Si el usuario pide crear o gestionar cursos, sigue también `skills/create-courses/SKILL.md` tras comprobar `get_course_authoring_capabilities`.

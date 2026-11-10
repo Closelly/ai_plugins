@@ -8,7 +8,7 @@ Fuente única, versionada y portable de **Closelly MCP App** para **ChatGPT/Code
 | Identificador | `closelly-ai-plugins` |
 | Versión | `1.11.0` |
 | Comandos | `/closelly`, `/LENA` |
-| Skills | `skills/mcp-business` (consulta), `skills/create-courses` (autoría de cursos) |
+| Skills | `skills/mcp-business` (consulta), `skills/create-courses` (autoría MCP), `skills/instructional-design` (diseño pedagógico) |
 | Config | `plugin.json`, `mcp.json` (ChatGPT/Codex), `.mcp.json` (Claude Code), `config/*.json` |
 | MCP Business | `https://auth.closelly.com/mcp/business` (OAuth) |
 
@@ -46,6 +46,7 @@ Closelly MCP App da contexto sobre el MCP de clientes:
 - ChatGPT App (`.app.json` / `connector_…`): opcional, no requerido para el bundle
 - Playbook: `skills/mcp-business/SKILL.md`
 - Autoría de cursos: `skills/create-courses/SKILL.md` (ver sección siguiente)
+- Diseño instruccional: `skills/instructional-design/SKILL.md`
 
 Claude.ai / Cowork: Settings → custom connector con la misma URL (siempre manual).
 
@@ -57,7 +58,15 @@ Skill portable para crear, editar, validar, publicar y despublicar cursos vía M
 - **Scopes opcionales** (no están en los base; requieren consentimiento explícito al conectar): `mcp.clients.courses.create`, `mcp.clients.courses.update`, `mcp.clients.courses.activities.write`, `mcp.clients.courses.publish`, `mcp.clients.courses.unpublish`. La conexión OAuth y los scopes base de lectura no cambian.
 - Despublicar exige un código OTP que **entrega una persona**; el skill nunca lo busca en Gmail/Docs ni en otra fuente.
 - No elimina cursos ni matricula usuarios.
-- **Pendiente:** el prompt canónico del diseñador instruccional (Luis) aún no está incluido; el skill solo trae el flujo operativo y un marcador para insertarlo.
+- Para brief, curriculum y entregables pedagógicos usa `skills/instructional-design/` y solo después de confirmación persiste con este skill.
+
+## Diseño instruccional (`instructional-design`)
+
+Diseñador instruccional amable de Closelly: entrevista, plan de micro-curso (45–60 min), secciones y actividades mapeadas a `content_type` reales del schema.
+
+- Entregables pedagógicos (storyboard, slides, banco de preguntas, guion LENA) en el chat; payload MCP solo con campos del schema.
+- Dos confirmaciones humanas (brief y plan) antes de escribir.
+- Handoff a `create-courses` para `create_course` / secciones / actividades / validar / publicar.
 
 ## Release
 

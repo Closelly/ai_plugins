@@ -22,7 +22,7 @@ Este skill **extiende** [`../mcp-business/SKILL.md`](../mcp-business/SKILL.md): 
 
 1. **Descubrir antes de actuar.** El primer paso de toda tarea de autoría es `get_course_authoring_capabilities`; después `get_course_authoring_schema` para el tipo de objeto que se va a escribir. Usa **solo** los nombres de tool, campos, enums y límites que esas respuestas y el `tools/list` del connector devuelvan. **No inventes** tools, campos, tipos de actividad ni valores.
 2. **Si una tool no está en `tools/list`** (backend aún no desplegado, tenant sin la capacidad o scope no concedido), dilo y detente en ese paso. No simules la operación con otra tool.
-3. **Prompt del diseñador instruccional: PENDIENTE.** Ver [Diseño instruccional](#diseño-instruccional-prompt-pendiente). No inventes un sustituto.
+3. **Diseño pedagógico:** si el usuario pide diseñar brief, curriculum, objetivos o actividades sin un plan ya aprobado, sigue [`../instructional-design/SKILL.md`](../instructional-design/SKILL.md) y vuelve aquí solo para persistir tras confirmación.
 4. **Despublicar solo con código OTP entregado por una persona.** Ver [Despublicar (OTP)](#despublicar-otp). **Nunca** obtengas el código de Gmail, Drive, Docs, Slack, Notion, calendario, archivos del repo ni de ninguna otra tool o fuente.
 5. **Fuera de alcance, sin excepción:** eliminar cursos (secciones o actividades) y matricular/asignar usuarios. Si el usuario lo pide, indica que este skill no lo hace y que debe hacerse desde el backoffice.
 6. **No pedir ni auto-solicitar scopes de escritura.** El plugin conecta solo con scopes base de lectura. Si falta un scope, informa cuál falta y que el usuario/admin debe dar consentimiento explícito reconectando el connector; no intentes forzar el flujo OAuth ni reutilizar credenciales.
@@ -67,23 +67,13 @@ Inventario esperado (13 tools + 2 de descubrimiento). Verifícalo contra `tools/
 
 Los argumentos exactos de cada tool no se documentan aquí a propósito: se leen de `get_course_authoring_schema` y de la `inputSchema` de `tools/list`.
 
-## Diseño instruccional (prompt PENDIENTE)
+## Diseño instruccional
 
-> **ESTADO: PENDIENTE de Luis.** El prompt canónico del diseñador instruccional de Closelly **aún no ha sido entregado**. Este skill **no contiene** ni debe improvisar un sustituto (ni taxonomías, ni plantillas de objetivos, ni criterios pedagógicos propios presentados como "el método Closelly").
->
-> Cuando Luis lo entregue, insertarlo **íntegro y sin reinterpretar** en el marcador de abajo y subir versión del plugin (ver `docs/release.md`).
+El playbook pedagógico vive en [`../instructional-design/SKILL.md`](../instructional-design/SKILL.md) (entrevista, catálogo de actividades ↔ `content_type`, plantilla de plan, handoff).
 
-<!-- INSTRUCTIONAL_DESIGNER_PROMPT:BEGIN (PENDIENTE — insertar prompt canónico entregado por Luis; no inventar) -->
-
-_(vacío: pendiente)_
-
-<!-- INSTRUCTIONAL_DESIGNER_PROMPT:END -->
-
-Comportamiento mientras el marcador siga vacío:
-
-- Di una vez, de forma explícita, que el prompt del diseñador instruccional canónico está pendiente y que la estructura del curso la define la persona usuaria.
-- No generes por tu cuenta objetivos de aprendizaje, secuencias didácticas ni contenido pedagógico como si fueran la metodología oficial. Si el usuario te entrega la estructura y el contenido (o pide explícitamente que le propongas un borrador), trabaja sobre eso, marcando claramente que es un borrador **no** basado en el prompt canónico.
-- Limítate al flujo operativo de abajo: crear, estructurar, validar y publicar lo que el usuario aprobó.
+- Si llega un brief incompleto o piden “diseña / estructura / curriculum / actividades”: usa ese skill primero.
+- Este skill se limita al flujo operativo MCP: descubrir → persistir lo aprobado → validar → publicar/despublicar.
+- No improvises taxonomías ni `content_type` fuera del schema; el catálogo pedagógico es orientativo y se recorta al schema real.
 
 ## Flujo operativo (esqueleto)
 
@@ -91,8 +81,8 @@ Detalle y checklist en [references/authoring-flow.md](references/authoring-flow.
 
 1. **Contexto (lectura):** `get_business` → `list_courses` (evitar duplicados; nunca pedir `course_id` si se puede listar) → `get_course_detail` si se edita un curso existente.
 2. **Descubrimiento de autoría:** `get_course_authoring_capabilities` → `get_course_authoring_schema`. Confirma qué tools y scopes están disponibles. Si falta algo, informa y detente o reduce el alcance.
-3. **Brief:** reúne de la persona usuaria lo necesario según el schema real (obligatorios primero). Aplica el prompt del diseñador instruccional **solo si ya fue insertado**; si no, ver sección anterior.
-4. **Plan:** presenta el plan (curso → secciones → actividades) y espera aprobación antes de escribir.
+3. **Brief / plan pedagógico:** si falta diseño, deriva a `instructional-design`; si el usuario ya trae estructura, reúne campos obligatorios del schema real.
+4. **Plan MCP:** presenta el plan (curso → secciones → actividades con `content_type` reales) y espera aprobación antes de escribir.
 5. **Crear/editar en orden:** `create_course` → `create_course_section` (por sección) → `create_course_activity` → `add_activity_to_course` → `reorder_course_content`. Para cambios, `update_*`. Tras cada bloque, verifica con `get_course_detail`.
 6. **Validar:** `validate_course_for_publication`. Reporta bloqueantes y advertencias; corrige o pide decisión. No publiques con bloqueantes.
 7. **Publicar (opcional, con confirmación explícita):** `publish_course_activity` (las que apliquen) → `publish_course`. Verifica el estado final con `get_course_detail`.

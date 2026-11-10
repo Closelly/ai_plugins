@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "closelly-ai-plugins",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "Closelly MCP App: skills y connector portable para ChatGPT/Codex, Claude Code y GitHub Copilot CLI.",
   "author": {
     "name": "Closelly Edutech SpA",
@@ -50,6 +50,18 @@
         "transport": "http",
         "auth": "oauth",
         "skill": "mcp-business",
+        "skills": [
+          "mcp-business",
+          "create-courses",
+          "instructional-design"
+        ],
+        "optionalScopes": [
+          "mcp.clients.courses.create",
+          "mcp.clients.courses.update",
+          "mcp.clients.courses.activities.write",
+          "mcp.clients.courses.publish",
+          "mcp.clients.courses.unpublish"
+        ],
         "config": "./config/mcp.business.json",
         "claudeCodeConfig": "./.mcp.json",
         "chatgptCodexConfig": "./.mcp.json"

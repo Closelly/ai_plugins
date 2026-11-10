@@ -1,0 +1,55 @@
+interface:
+  display_name: "Closelly Diseño Instruccional"
+  short_description: "Diseñador instruccional amable de Closelly: brief, plan de curso y actividades; MCP vía create-courses"
+  default_prompt: "Usa $instructional-design para diseñar un micro-curso Closelly a partir de mi documentación: entrevista el brief, propone secciones y actividades con content_type reales, y solo tras mi confirmación pasa a create-courses para escribir en MCP."
+
+policy:
+  allow_implicit_tool_use: true
+  require_confirmation_before_write_tools: true
+
+branding:
+  logo: "../mcp-business/assets/logo.png"
+  logo_dark: "../mcp-business/assets/logo-dark.png"
+  icon_small: "../mcp-business/assets/icon-small.png"
+  icon: "../mcp-business/assets/icon.png"
+  color: "#0EA5E9"
+  website_url: "https://closelly.com"
+  privacy_policy_url: "https://closelly.com/privacy"
+  contact_email: "support@closelly.com"
+  legal_info_url: "https://closelly.com/legal"
+  categories:
+    - education
+    - productivity
+  keywords:
+    - closelly
+    - instructional design
+    - diseño instruccional
+    - microlearning
+    - curriculum
+    - LENA
+    - course authoring
+    - mcp
+
+mcp_server:
+  name: "closelly-business"
+  url: "https://auth.closelly.com/mcp/business"
+  auth: "oauth"
+  tools:
+    preferred:
+      - get_course_authoring_capabilities
+      - get_course_authoring_schema
+      - get_course_detail
+      - list_courses
+      - create_course
+      - create_course_section
+      - create_course_activity
+      - update_course_activity
+      - add_activity_to_course
+      - validate_course_for_publication
+    avoid_unless_explicit:
+      - publish_course
+      - publish_course_activity
+      - unpublish_course
+      - delete_course
+      - enroll_users_to_course
+

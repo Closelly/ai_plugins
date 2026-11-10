@@ -8,7 +8,7 @@ Este repositorio es la fuente única de **Closelly MCP App** (`closelly-ai-plugi
 | --- | --- |
 | Nombre visible | Closelly MCP App |
 | Identificador | `closelly-ai-plugins` |
-| Versión | `1.8.0` |
+| Versión | `1.11.0` |
 | Comandos | `/closelly`, `/LENA` |
 | MCP Business | `https://auth.closelly.com/mcp/business` (OAuth, skill `mcp-business`) |
 
@@ -28,12 +28,23 @@ Alinea `name`, `version` y el display name **Closelly MCP App** en `plugin.json`
 ├── .claude-plugin/marketplace.json
 ├── .agents/plugins/marketplace.json
 ├── skills/
-│   └── mcp-business/
+│   ├── mcp-business/
+│   │   ├── SKILL.md
+│   │   ├── agents/openai.yaml         # UI ChatGPT: Closelly MCP App
+│   │   └── references/
+│   ├── create-courses/                # autoría de cursos (scopes opcionales)
+│   │   ├── SKILL.md
+│   │   ├── agents/openai.yaml
+│   │   ├── assets/
+│   │   └── references/authoring-flow.md
+│   └── instructional-design/          # brief / plan pedagógico → handoff create-courses
 │       ├── SKILL.md
-│       ├── agents/openai.yaml         # UI ChatGPT: Closelly MCP App
+│       ├── agents/openai.yaml
+│       ├── assets/
 │       └── references/
 └── config/mcp.business.json           # config portable / documentación
 ```
+
 
 ## MCP por host
 

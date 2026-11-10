@@ -4,7 +4,7 @@ description: Playbook de Closelly MCP App (connector /mcp/business). Invoca con 
 license: MIT
 metadata:
   plugin_name: closelly-ai-plugins
-  plugin_version: "1.6.0"
+  plugin_version: "1.11.0"
   plugin_display_name: Closelly MCP App
   mcp_server: closelly-business
   mcp_url: https://auth.closelly.com/mcp/business
@@ -134,6 +134,10 @@ Las 18 tools analíticas (`get_student_activity_progress`, evaluaciones, LENA, e
 4. **Exportación:** `export_course_progress` / `export_business_progress` → entregar al usuario el `download_url` del archivo `.json` (no incrustar el contenido en la conversación). El enlace **caduca a los 60 minutos**.
 
 Nunca pedir un `course_id` al usuario si puedes obtenerlo con `list_courses`.
+
+## Autoría de cursos (skill aparte)
+
+Crear, editar, validar, publicar o despublicar cursos se documenta en [`../create-courses/SKILL.md`](../create-courses/SKILL.md). El brief y el plan pedagógico viven en [`../instructional-design/SKILL.md`](../instructional-design/SKILL.md). Usa scopes opcionales `mcp.clients.courses.create|update|activities.write|publish|unpublish` que **no** forman parte de los scopes base del plugin y requieren consentimiento explícito. Este playbook no usa tools de escritura.
 
 ## Exportaciones (archivo .json descargable)
 

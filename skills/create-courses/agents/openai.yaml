@@ -1,8 +1,8 @@
 interface:
   display_name: "Closelly MCP App — Crear cursos"
   short_description: "Crea, valida y publica cursos en Closelly (autoría con consentimiento explícito)"
-  icon_small: "./assets/icon-small.png"
-  icon_large: "./assets/logo.png"
+  icon_small: "../mcp-business/assets/icon-small.png"
+  icon_large: "../mcp-business/assets/logo.png"
   brand_color: "#7C3AED"
   default_prompt: "Usa /closelly o /LENA para crear o editar un curso en Closelly. Primero descubre las capacidades y el schema reales de autoría."
 

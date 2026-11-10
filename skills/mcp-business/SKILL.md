@@ -137,7 +137,7 @@ Nunca pedir un `course_id` al usuario si puedes obtenerlo con `list_courses`.
 
 ## Autoría de cursos (skill aparte)
 
-Crear, editar, validar, publicar o despublicar cursos se documenta en [`../create-courses/SKILL.md`](../create-courses/SKILL.md). Usa scopes opcionales `mcp.clients.courses.create|update|activities.write|publish|unpublish` que **no** forman parte de los scopes base del plugin y requieren consentimiento explícito. Este playbook no usa tools de escritura.
+Crear, editar, validar, publicar o despublicar cursos se documenta en [`../create-courses/SKILL.md`](../create-courses/SKILL.md). El brief y el plan pedagógico viven en [`../instructional-design/SKILL.md`](../instructional-design/SKILL.md). Usa scopes opcionales `mcp.clients.courses.create|update|activities.write|publish|unpublish` que **no** forman parte de los scopes base del plugin y requieren consentimiento explícito. Este playbook no usa tools de escritura.
 
 ## Exportaciones (archivo .json descargable)
 

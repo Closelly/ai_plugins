@@ -2,7 +2,7 @@
 
 Esqueleto de flujo. Los campos de cada objeto **no** se definen aquí: se leen de `get_course_authoring_schema`. Las tools disponibles se leen de `get_course_authoring_capabilities` y `tools/list`.
 
-> El prompt canónico del diseñador instruccional está **PENDIENTE de Luis**. Este documento no lo sustituye. Cuando se entregue, se inserta en `SKILL.md` (marcador `INSTRUCTIONAL_DESIGNER_PROMPT`) y se invoca en el paso 3.
+> Diseño pedagógico: ver [`../../instructional-design/SKILL.md`](../../instructional-design/SKILL.md). Este checklist solo cubre la persistencia MCP.
 
 ## 0. Pre-vuelo
 
@@ -29,8 +29,9 @@ Registrar qué operaciones están disponibles y recortar el plan a ellas.
 
 ## 3. Brief
 
+- [ ] Si falta diseño pedagógico: seguir `instructional-design` (entrevista + plan) y obtener confirmación.
 - [ ] Reunir campos obligatorios según el schema real.
-- [ ] Si el prompt del diseñador instruccional ya fue insertado: aplicarlo tal cual. Si no: avisar que está pendiente y trabajar solo con lo que el usuario define o aprueba.
+- [ ] Recortar `content_type` al catálogo real de `get_course_authoring_schema`.
 
 ## 4. Plan y aprobación
 

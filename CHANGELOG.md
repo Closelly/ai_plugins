@@ -2,6 +2,12 @@
 
 El versionado sigue [Semantic Versioning](https://semver.org/).
 
+## 1.11.0 - 2026-11-10
+
+### Added
+
+- Skill `closelly-interactive` para que la AI de un cliente arme un ZIP compatible con la actividad Interactivo Closelly, con el mismo ajuste de escenario en horizontal y vertical.
+
 ## 1.10.0 - 2026-10-26
 
 ### Fixed

@@ -6,7 +6,7 @@ Fuente única, versionada y portable de **Closelly MCP App** para **ChatGPT/Code
 | --- | --- |
 | Nombre visible | Closelly MCP App |
 | Identificador | `closelly-ai-plugins` |
-| Versión | `1.9.0` |
+| Versión | `1.11.0` |
 | Comandos | `/closelly`, `/LENA` |
 | Skills | `skills/` (markdown + YAML de UI ChatGPT) |
 | Config | `plugin.json`, `mcp.json` (ChatGPT/Codex), `.mcp.json` (Claude Code), `config/*.json` |
@@ -31,6 +31,10 @@ copilot plugin install Closelly/ai_plugins
 Tras instalar, usa **`/closelly`** o **`/LENA`**.
 
 Guías: [ChatGPT/Codex](docs/chatgpt-codex.md), [Claude Code](docs/claude-code.md), [Copilot CLI](docs/github-copilot-cli.md).
+
+## Interactivo Closelly
+
+Skill para que la AI de un cliente arme un ZIP compatible con la actividad **Interactivo Closelly**: `skills/closelly-interactive/SKILL.md`. No consulta el MCP. El mismo archivo vive en el backend, en `.agents/skills/closelly-interactive/SKILL.md`, y debe copiarse aquí cuando cambie el contrato del paquete.
 
 ## MCP Business
 

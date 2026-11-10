@@ -9,20 +9,19 @@ El versionado sigue [Semantic Versioning](https://semver.org/).
 - Skill portable `skills/create-courses/` para autoría de cursos con Closelly MCP Business: flujo operativo (descubrimiento → plan → crear/editar → validar → publicar/despublicar), `agents/openai.yaml`, assets y `references/authoring-flow.md`.
 - Cubre las tools `get_course_authoring_capabilities`, `get_course_authoring_schema`, `create_course`, `update_course`, `create_course_section`, `update_course_section`, `create_course_activity`, `update_course_activity`, `add_activity_to_course`, `reorder_course_content`, `validate_course_for_publication`, `publish_course_activity`, `publish_course`, `request_course_unpublish_code`, `unpublish_course`. El skill obliga a descubrir capacidades y schemas reales antes de escribir.
 - Scopes opcionales (no base, consentimiento explícito): `mcp.clients.courses.create|update|activities.write|publish|unpublish`. Documentados en README, `docs/mcp-remote.md` y `plugin.json` (`optionalScopes`).
-- `/closelly` y `/LENA` enrutan peticiones de autoría de cursos al nuevo skill; `mcp-business` enlaza al skill.
+- Skill `skills/instructional-design/`: diseñador instruccional amable (entrevista, plan 45–60 min, catálogo pedagógico ↔ `content_type`, plantilla de outline, handoff a `create-courses`).
+- `/closelly` y `/LENA` enrutan diseño pedagógico a `instructional-design` y autoría MCP a `create-courses`; `mcp-business` y manifests listan ambos skills.
 
 ### Security
 
 - Despublicar solo con código OTP entregado por una persona; el skill nunca lo obtiene de Gmail, Docs ni otra fuente.
 - Sin borrado de cursos ni matriculación de usuarios.
-
-### Pending
-
-- El prompt canónico del diseñador instruccional (Luis) aún no se ha entregado. El skill incluye únicamente el esqueleto operativo y un marcador `INSTRUCTIONAL_DESIGNER_PROMPT` donde insertarlo tal cual.
+- Escritura MCP solo tras confirmaciones de brief/plan (instructional-design) y del flujo OTP/publicación de `create-courses`.
 
 ### Changed
 
 - Versión 1.11.0 en manifests y marketplaces. `baseScopes` y la conexión OAuth existentes no cambian.
+- `create-courses` deja el marcador pendiente del prompt de Luis y apunta al skill `instructional-design`.
 
 ## 1.10.0 - 2026-10-26
 

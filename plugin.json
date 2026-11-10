@@ -52,7 +52,8 @@
         "skill": "mcp-business",
         "skills": [
           "mcp-business",
-          "create-courses"
+          "create-courses",
+          "instructional-design"
         ],
         "optionalScopes": [
           "mcp.clients.courses.create",

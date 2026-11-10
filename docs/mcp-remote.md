@@ -25,7 +25,7 @@ Este plugin documenta y conecta el **MCP Business** de Closelly.
 | Auth | OAuth 2.0 (User email + password) |
 | Login | `https://auth.closelly.com/oauth/login` |
 | ChatGPT/Codex client registration | DCR (`registration_endpoint` del AS) |
-| Skill | `skills/mcp-business/` (consulta), `skills/create-courses/` (autoría) |
+| Skill | `skills/mcp-business/` (consulta), `skills/create-courses/` (autoría), `skills/instructional-design/` (diseño) |
 | Config | `mcp.json` (ChatGPT/Codex) / `.mcp.json` (Claude Code) / `config/mcp.business.json` |
 
 El tenant sale del token; no se pasa `business_id` de otro negocio. Requiere `business.mcp_enabled = true`.

@@ -32,13 +32,19 @@ Alinea `name`, `version` y el display name **Closelly MCP App** en `plugin.json`
 │   │   ├── SKILL.md
 │   │   ├── agents/openai.yaml         # UI ChatGPT: Closelly MCP App
 │   │   └── references/
-│   └── create-courses/                # autoría de cursos (scopes opcionales)
+│   ├── create-courses/                # autoría de cursos (scopes opcionales)
+│   │   ├── SKILL.md
+│   │   ├── agents/openai.yaml
+│   │   ├── assets/
+│   │   └── references/authoring-flow.md
+│   └── instructional-design/          # brief / plan pedagógico → handoff create-courses
 │       ├── SKILL.md
 │       ├── agents/openai.yaml
 │       ├── assets/
-│       └── references/authoring-flow.md
+│       └── references/
 └── config/mcp.business.json           # config portable / documentación
 ```
+
 
 ## MCP por host
 

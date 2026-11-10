@@ -1,0 +1,8 @@
+interface:
+  display_name: "Interactivo Closelly"
+  short_description: "Arma un ZIP compatible con la actividad Interactivo Closelly"
+  brand_color: "#7C3AED"
+  default_prompt: "Arma un interactivo HTML en ZIP para la actividad Interactivo Closelly, ajustado al iframe en horizontal o vertical."
+
+policy:
+  allow_implicit_invocation: true

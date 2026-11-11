@@ -311,7 +311,7 @@ JSON en `content[0].text`. Tenant fijado por la sesión OAuth.
 - **Qué es:** genera un **archivo `.json` descargable** con el avance **completo** de matrículas del tenant (**todas** las filas, sin paginación; opcional `course_id`) para análisis posteriores. No incrusta el dataset en el chat.
 - **Input:** opcional `course_id`, `format` (`json`), `exclude_test_users` (default `false`), `include_pii` (default `false`)
 - **Success (metadatos):** `file_name`, `download_url`, `expires_at`, `expires_in_seconds` (**3600 = 60 min**), `format`, `rows`, `business_id`, `course_id`, `include_pii`
-- **TTL:** el `download_url` caduca a los **60 minutos`.
+- **TTL:** el `download_url` caduca a los **60 minutos**.
 - **Estructura del archivo `.json`:**
 
 ```json

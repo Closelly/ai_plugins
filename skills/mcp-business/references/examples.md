@@ -74,3 +74,11 @@
 | Historial de sincronizaciones programadas | `get_sence_implementation_syncs` | `{ "implementation_id": 345, "source": "scheduled" }` | tiempos, conteos, errores |
 | DJs pendientes | `get_sence_implementation_declarations` | `{ "implementation_id": 345, "status": "progress" }` | sin PII por defecto |
 | DJs con nombre/email/RUT | `get_sence_implementation_declarations` | `{ "implementation_id": 345, "include_pii": true }` | requiere `mcp.clients.pii.read` |
+
+## Autoría — media
+
+| Pregunta | Tool / paso | Argumentos | Notas |
+|----------|-------------|------------|-------|
+| Preparar subida de lámina PNG | `prepare_course_media_upload` | `{ "purpose": "image", "filename": "lamina.png" }` | Devuelve `upload_url` + `file_url` + `instructions` |
+| Subir el binario | HTTP PUT | `PUT upload_url` con cuerpo binario y `Content-Type: application/octet-stream` | Fuera de MCP; 200/204 |
+| Completar imagen/PDF/zip/mp4 | `upload_course_media` | `{ "purpose": "image", "source_url": "<file_url>" }` | Luego usar `content` en create/update activity |

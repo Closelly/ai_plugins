@@ -46,18 +46,16 @@ Registrar qué operaciones están disponibles y recortar el plan a ellas.
 | 2 | `create_course_section` | `mcp.clients.courses.update` |
 | 3a | `prepare_course_media_upload` | `mcp.clients.courses.activities.write` |
 | 3b | HTTP PUT binario a `upload_url` | (fuera de MCP; `Content-Type: application/octet-stream`) |
-| 3c | `upload_course_media` (`source_url=file_url`) | `mcp.clients.courses.activities.write` |
-| 4 | `create_course_activity` | `mcp.clients.courses.activities.write` |
-| 5 | `add_activity_to_course` | `mcp.clients.courses.activities.write` |
-| 6 | `reorder_course_content` | `mcp.clients.courses.update` |
+| 3c | `create_course_activity` con `content` = file_url temporal | `mcp.clients.courses.activities.write` |
+| 4 | `add_activity_to_course` | `mcp.clients.courses.activities.write` |
+| 5 | `reorder_course_content` | `mcp.clients.courses.update` |
 | edición | `update_course`, `update_course_section`, `update_course_activity` | según tool |
 
 ### Media (image / pdf / zip / mp4)
 
-- [ ] `prepare_course_media_upload` → guardar `upload_url` y `file_url` (**temporales**).
+- [ ] `prepare_course_media_upload` → guardar `upload_url`, `file_url` y `content` (**temporales**).
 - [ ] PUT del archivo a `upload_url` (sin multipart/base64). Seguir `instructions` de la tool.
-- [ ] `upload_course_media` con `source_url=file_url` (obligatorio: descarga, reprocesa al destino definitivo, borra temp S3).
-- [ ] Usar solo el `content`/`url` definitivo en create/update activity (nunca el `file_url` temporal).
+- [ ] `create_course_activity` / `update_course_activity` con ese `content` (file_url temporal): descarga, reprocesa y borra temp S3.
 
 - [ ] Verificar con `get_course_detail` tras cada bloque.
 - [ ] Ante fallo parcial: releer estado antes de reintentar (sin duplicar).

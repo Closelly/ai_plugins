@@ -609,17 +609,9 @@ Las cuatro tools usan `mcp.clients.progress.read` y siempre quedan limitadas al 
 - **Scope:** `mcp.clients.courses.activities.write`
 - **Input required:** `purpose` (`image`|`document`|`video`|`audio`|`zip`), `filename` (con extensión)
 - **Input opcional:** `mime_type`, `course_id`
-- **Success:** `temporary: true`, `upload_url` (PUT firmado temporal), `file_url`, `object_key` bajo `uploads/frontend/.../temporal/mcp/`, `expires_in`, `headers`, `instructions`, `next_arguments`
+- **Success:** `temporary: true`, `upload_url` (PUT firmado temporal), `file_url`, `content`, `object_key` bajo `uploads/frontend/.../temporal/mcp/`, `expires_in`, `headers`, `instructions`, `next_arguments`
 - **Cómo debe subir el LLM el archivo después:**
   1. Llamar esta tool.
   2. Hacer HTTP PUT del binario completo a `upload_url` con `Content-Type: application/octet-stream`.
   3. No usar multipart ni base64; no reenviar el archivo por MCP.
-  4. Si el PUT es 200/204, llamar **siempre** `upload_course_media` con `source_url=file_url`. No pasar `file_url` a create/update activity.
-
-### upload_course_media
-
-- **Scope:** `mcp.clients.courses.activities.write`
-- **Input required:** `purpose`, `source_url` (file_url temporal u otra URL de descarga: image/pdf/zip/mp4)
-- **Input opcional:** `filename`, `mime_type`, `course_id`, `activity_id` (solo zip interactivo), `idempotency_key`
-- **Success:** `url`/`content` definitivos; `source_temporary_deleted` si borró el temp; `storage` (`s3`|`vimeo`)
-- Descarga el temporal → reprocesa (imagen/PDF/audio/zip → S3 de actividad; video → Vimeo) → elimina el objeto temporal de S3
+  4. Si el PUT es 200/204, llamar `create_course_activity` / `update_course_activity` con `content` (file_url temporal). Esas tools descargan, reprocesan y borran el temp.

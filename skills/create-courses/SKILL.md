@@ -37,7 +37,7 @@ No están en `baseScopes` de `.mcp.json` / `mcp.json` / `config/mcp.business.jso
 |-------|--------------------------------|
 | `mcp.clients.courses.create` | `create_course` |
 | `mcp.clients.courses.update` | `update_course`, `create_course_section`, `update_course_section`, `reorder_course_content` |
-| `mcp.clients.courses.activities.write` | `prepare_course_media_upload`, `upload_course_media`, `create_course_activity`, `update_course_activity`, `add_activity_to_course` |
+| `mcp.clients.courses.activities.write` | `prepare_course_media_upload`, `create_course_activity`, `update_course_activity`, `add_activity_to_course` |
 | `mcp.clients.courses.publish` | `validate_course_for_publication`, `publish_course_activity`, `publish_course` |
 | `mcp.clients.courses.unpublish` | `request_course_unpublish_code`, `unpublish_course` |
 
@@ -56,8 +56,7 @@ Inventario esperado (15 tools + 2 de descubrimiento). Verifícalo contra `tools/
 | Curso | `create_course` | Crear curso (borrador) |
 | Curso | `update_course` | Editar metadatos del curso |
 | Estructura | `create_course_section` / `update_course_section` | Secciones |
-| Media | `prepare_course_media_upload` | URLs **temporales** firmadas S3 (`upload_url` / `file_url`) |
-| Media | `upload_course_media` | Descarga temp → destino definitivo → borra temp; usar su `content`/`url` |
+| Media | `prepare_course_media_upload` | URLs **temporales** firmadas S3 (`upload_url` / `file_url` + `content`) |
 | Contenido | `create_course_activity` / `update_course_activity` | Actividades (pasan `content` con URLs de media) |
 | Contenido | `add_activity_to_course` | Vincular una actividad a curso/sección |
 | Contenido | `reorder_course_content` | Reordenar secciones y actividades |
@@ -72,10 +71,9 @@ Inventario esperado (15 tools + 2 de descubrimiento). Verifícalo contra `tools/
 MCP no acepta multipart ni base64. `upload_url` / `file_url` son siempre **temporales**:
 
 1. `prepare_course_media_upload` con `purpose` (`image`|`document`|`video`|`audio`|`zip`) y `filename` (con extensión).
-2. Lee `upload_url`, `file_url` (`temporary: true`), `expires_in` e `instructions`.
+2. Lee `upload_url`, `file_url` (`temporary: true`), `content`, `expires_in` e `instructions`.
 3. **HTTP PUT** del binario completo a `upload_url` con header `Content-Type: application/octet-stream` (no reenvíes el archivo por MCP).
-4. Si el PUT responde 200/204, llama **siempre** `upload_course_media` con `purpose` y `source_url` = `file_url`. El backend descarga el temporal, lo reprocesa (imagen/PDF/audio/zip → S3 de actividad; video → Vimeo) y elimina el objeto temporal de S3.
-5. Usa **solo** el `content` / `url` definitivo de esa respuesta en `create_course_activity` o `update_course_activity`. Nunca pases el `file_url` temporal a create/update activity.
+4. Si el PUT responde 200/204, llama `create_course_activity` o `update_course_activity` pasando ese `content` (`url_images`/`url` = `file_url` temporal). Esas tools descargan el temporal, lo reprocesan (imagen/PDF/audio/zip → S3 de actividad; video → Vimeo) y eliminan el objeto temporal de S3.
 
 Los argumentos exactos de cada tool no se documentan aquí a propósito: se leen de `get_course_authoring_schema` y de la `inputSchema` de `tools/list`.
 
@@ -95,7 +93,7 @@ Detalle y checklist en [references/authoring-flow.md](references/authoring-flow.
 2. **Descubrimiento de autoría:** `get_course_authoring_capabilities` → `get_course_authoring_schema`. Confirma qué tools y scopes están disponibles. Si falta algo, informa y detente o reduce el alcance.
 3. **Brief / plan pedagógico:** si falta diseño, deriva a `instructional-design`; si el usuario ya trae estructura, reúne campos obligatorios del schema real.
 4. **Plan MCP:** presenta el plan (curso → secciones → actividades con `content_type` reales) y espera aprobación antes de escribir.
-5. **Crear/editar en orden:** `create_course` → `create_course_section` (por sección) → media (`prepare_course_media_upload` → PUT → `upload_course_media`) → `create_course_activity` → `add_activity_to_course` → `reorder_course_content`. Para cambios, `update_*`. Tras cada bloque, verifica con `get_course_detail`.
+5. **Crear/editar en orden:** `create_course` → `create_course_section` (por sección) → media (`prepare_course_media_upload` → PUT → create/update activity) → `create_course_activity` → `add_activity_to_course` → `reorder_course_content`. Para cambios, `update_*`. Tras cada bloque, verifica con `get_course_detail`.
 6. **Validar:** `validate_course_for_publication`. Reporta bloqueantes y advertencias; corrige o pide decisión. No publiques con bloqueantes.
 7. **Publicar (opcional, con confirmación explícita):** `publish_course_activity` (las que apliquen) → `publish_course`. Verifica el estado final con `get_course_detail`.
 8. **Despublicar (solo si se pide):** flujo OTP de abajo.

@@ -311,7 +311,7 @@ JSON en `content[0].text`. Tenant fijado por la sesión OAuth.
 - **Qué es:** genera un **archivo `.json` descargable** con el avance **completo** de matrículas del tenant (**todas** las filas, sin paginación; opcional `course_id`) para análisis posteriores. No incrusta el dataset en el chat.
 - **Input:** opcional `course_id`, `format` (`json`), `exclude_test_users` (default `false`), `include_pii` (default `false`)
 - **Success (metadatos):** `file_name`, `download_url`, `expires_at`, `expires_in_seconds` (**3600 = 60 min**), `format`, `rows`, `business_id`, `course_id`, `include_pii`
-- **TTL:** el `download_url` caduca a los **60 minutos**.
+- **TTL:** el `download_url` caduca a los **60 minutos`.
 - **Estructura del archivo `.json`:**
 
 ```json
@@ -601,3 +601,25 @@ Las cuatro tools usan `mcp.clients.progress.read` y siempre quedan limitadas al 
 - Sin `include_pii`: devuelve IDs técnicos (`sence_user_id`, `front_user_id`) y estado DJ.
 - `include_pii: true` requiere además `mcp.clients.pii.read`; agrega nombre, email y UID/RUT.
 - No devuelve `doc_declaration_url`.
+
+## Autoría — multimedia
+
+### prepare_course_media_upload
+
+- **Scope:** `mcp.clients.courses.activities.write`
+- **Input required:** `purpose` (`image`|`document`|`video`|`audio`|`zip`), `filename` (con extensión)
+- **Input opcional:** `mime_type`, `course_id`
+- **Success:** `upload_url` (PUT firmado efímero S3 vía `Utility.get_presigned_url`), `file_url` (URL de descarga sin query), `expires_in`, `headers`, `instructions`, `next_arguments`
+- **Cómo debe subir el LLM el archivo después:**
+  1. Llamar esta tool.
+  2. Hacer HTTP PUT del binario completo a `upload_url` con `Content-Type: application/octet-stream`.
+  3. No usar multipart ni base64; no reenviar el archivo por MCP.
+  4. Si el PUT es 200/204, continuar con `upload_course_media` usando `source_url=file_url`.
+
+### upload_course_media
+
+- **Scope:** `mcp.clients.courses.activities.write`
+- **Input required:** `purpose`, `source_url` (URL de descarga del archivo ya subido: image/pdf/zip/mp4)
+- **Input opcional:** `filename`, `mime_type`, `course_id`, `activity_id` (solo zip interactivo), `idempotency_key`
+- **Success:** `url`, `content` listo para create/update activity, `storage` (`s3`|`vimeo`)
+- Imagen/PDF/audio/zip → S3 temporal; video → Vimeo (URL player en `url`)

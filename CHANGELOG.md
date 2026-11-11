@@ -2,6 +2,20 @@
 
 El versionado sigue [Semantic Versioning](https://semver.org/).
 
+## 1.12.0 - 2026-11-11
+
+### Added
+
+- Skill `closelly-interactive` con el contrato de escenario fijo horizontal o vertical y los dos paquetes de ejemplo copiados íntegramente del backend (PR #1034, commit `64456814a2d4717ca418638909b2d5641abdccac`).
+- Skill `create-activities`: formatos reales por actividad, tarjetas de contenido PNG/SVG, video educativo con Remotion y audio MP3. Incluye diseño aportado por el usuario, voz en off y subtítulos, con verificación de la capacidad real de audio del agente.
+- Referencia de plugins/plantillas oficiales de Remotion con métricas públicas de adopción consultadas el 11 de noviembre de 2026.
+
+### Changed
+
+- Routing de `/closelly` y `/LENA`, catálogo de skills y enlaces entre diseño, producción de recursos y persistencia MCP.
+- Catálogo pedagógico alineado con el editor actual: tarjetas `ContentCanvas`, Genially `ContentPresentation` e interactivos `ContentIframe`. Las medidas recomendadas se distinguen de los límites del producto.
+- Versión 1.12.0 alineada en manifests, marketplace y metadata. Los ejemplos incluyen assets HTML/CSS/JavaScript y audio.
+
 ## 1.11.0 - 2026-11-06
 
 ### Added

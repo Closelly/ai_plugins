@@ -4,7 +4,7 @@ description: Diseñador instruccional amable de Closelly para micro-cursos y act
 license: MIT
 metadata:
   plugin_name: closelly-ai-plugins
-  plugin_version: "1.11.0"
+  plugin_version: "1.12.0"
   plugin_display_name: Closelly MCP App
   mcp_server: closelly-business
   mcp_url: https://auth.closelly.com/mcp/business
@@ -100,13 +100,18 @@ Resumen:
 
 | Brief | `content_type` típico |
 |-------|------------------------|
-| Flashcard | `ContentArticle` / `ContentImage` |
+| Tarjetas de contenido / flashcards | `ContentCanvas` (editor de tarjetas; otros formatos solo si se eligen expresamente) |
 | Video | `ContentVideo` |
-| Interactivo / Genially | `ContentCanvas` / `ContentIframe` |
+| Interactivo Closelly / externo | `ContentIframe` (`closelly_interactive` / `external`) |
+| Presentación / Genially | `ContentPresentation` (wizard actual) |
 | Evaluación estándar | `ContentTest` |
 | Evaluación con LENA | `ContentAssistantQuiz` (y/o `ContentRolePlay`) |
 
 Otros tipos del schema (`ContentAudio`, `ContentSurvey`, `ContentHomework`, `ContentGame`, evidencias, etc.) solo si aparecen en `get_course_authoring_schema` y encajan con el brief.
+
+## Recursos finales de las actividades
+
+Para producir tarjetas, videos, audio y documentos a partir del plan aprobado, usa [create-activities](../create-activities/SKILL.md). Para Interactivo Closelly usa [closelly-interactive](../closelly-interactive/SKILL.md), con sus ejemplos horizontal y vertical. El catálogo de formatos distingue medidas recomendadas de restricciones comprobadas del producto.
 
 ## Handoff a `create-courses`
 

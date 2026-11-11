@@ -4,7 +4,7 @@ description: Playbook de Closelly MCP App para crear, editar, validar y publicar
 license: MIT
 metadata:
   plugin_name: closelly-ai-plugins
-  plugin_version: "1.11.0"
+  plugin_version: "1.12.0"
   plugin_display_name: Closelly MCP App
   mcp_server: closelly-business
   mcp_url: https://auth.closelly.com/mcp/business
@@ -66,6 +66,10 @@ Inventario esperado (13 tools + 2 de descubrimiento). Verifícalo contra `tools/
 | Despublicación | `unpublish_course` | Despublicar con el código entregado por un humano |
 
 Los argumentos exactos de cada tool no se documentan aquí a propósito: se leen de `get_course_authoring_schema` y de la `inputSchema` de `tools/list`.
+
+## Producción de recursos de una actividad
+
+Si ya hay un objetivo o plan y faltan tarjetas, video, audio, documentos o preguntas, usa [create-activities](../create-activities/SKILL.md) para producir los archivos. El ZIP HTML se prepara con [closelly-interactive](../closelly-interactive/SKILL.md). Vuelve a este flujo para persistir los recursos mediante el schema y las herramientas disponibles.
 
 ## Diseño instruccional
 

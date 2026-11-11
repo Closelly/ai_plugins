@@ -2,14 +2,14 @@
 
 Fuente de verdad de tipos disponibles: `get_course_authoring_schema` / `tools/list`. Esta tabla es orientativa; si un `content_type` no aparece en el schema, no lo uses.
 
-## Flashcard
+## Tarjetas de contenido / flashcards
 
 - **Propósito:** reforzar conceptos, presentar ideas simples, dar la bienvenida o instrucciones.
-- **Formato de diseño:** tarjetas ~20 cm alto × 10 cm ancho; texto breve (móvil); pueden incluir imagen/icono.
-- **Límite:** máximo 10 cards por set.
-- **`content_type` MCP:** preferir `ContentArticle` o `ContentImage` (no existe tipo `Flashcard`).
+- **Formato de diseño:** consulta [formatos de tarjetas](../../create-activities/references/activity-formats.md). El editor acepta PNG/SVG y muestra 600×400 como referencia; no es un límite de píxeles validado. Usa texto breve y comprueba el preview móvil. La antigua medida de 20×10 cm no es un requisito del editor.
+- **Recomendación pedagógica:** hasta 10 tarjetas por set; no es un límite confirmado del backend.
+- **`content_type`:** `ContentCanvas` corresponde a tarjetas de contenido en el backoffice actual; no existe un tipo `Flashcard`. El schema MCP debe exponer los campos necesarios para persistir la secuencia. `ContentArticle` y `ContentImage` son otros formatos y se eligen expresamente, no como equivalentes automáticos.
 - **Entregable pedagógico:** descripción de cada card (texto + imagen/icono sugerido).
-- **Payload MCP:** actividad borrador con nombre, duración 1–3 min, descripción/contenido breve; el arte de las cards puede quedar en el chat si no hay upload.
+- **Payload MCP:** campos del schema vivo y referencias alojadas que permita. Si faltan upload o children, entrega los archivos finales mediante `create-activities` y señala la carga pendiente; no declares que la secuencia quedó guardada.
 
 ## Video
 
@@ -22,20 +22,20 @@ Fuente de verdad de tipos disponibles: `get_course_authoring_schema` / `tools/li
   - Descripción general (qué ocurre en pantalla)
   - Número de escenas + storyboard escena a escena
   - Duración estimada
-- **Payload MCP:** metadatos de la actividad + URL/archivo cuando exista. El storyboard **no** sustituye el video.
+- **Payload MCP:** metadatos + referencia alojada cuando exista. El storyboard **no** sustituye el video. Para producirlo, seguir [video con Remotion](../../create-activities/references/video-remotion.md), con diseño del usuario, voz en off y subtítulos.
 
 ## Interactivo (Genially / slideshow)
 
 - **Propósito:** interacción slide a slide, selección, feedback positivo/negativo.
 - **Formato de diseño:** 5–15 slides; contenido más denso que flashcard, aún legible en móvil.
-- **`content_type` MCP:** `ContentCanvas` (Genially) o `ContentIframe` (interactivo externo).
+- **`content_type`:** el wizard actual mapea Genially a `ContentPresentation`. El interactivo externo y el ZIP Interactivo Closelly usan `ContentIframe` con `sub_type=external` o `closelly_interactive`, respectivamente. Confirmar los campos disponibles en el schema MCP.
 - **Entregable pedagógico:**
   - Nombre (hasta 40 caracteres)
   - Hasta 3 objetivos
   - Descripción general
   - Número de slides + detalle slide a slide (interacciones y navegación)
   - Duración estimada
-- **Payload MCP:** actividad + URL/`genially_file` cuando el schema lo permita.
+- **Payload MCP:** actividad + referencia o URL admitida por el schema. Para el ZIP, seguir [closelly-interactive](../../closelly-interactive/SKILL.md); no inventar un campo `genially_file` o una herramienta de upload.
 
 ## Evaluación estándar
 

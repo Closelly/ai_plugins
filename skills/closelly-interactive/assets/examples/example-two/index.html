@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ejemplo mínimo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="viewport">
+    <main class="stage">
+      <h1>Elige la respuesta</h1>
+      <p id="greeting"></p>
+      <button type="button" class="primary" data-action="begin">Empezar</button>
+      <fieldset class="hidden" id="choice">
+        <legend>¿Qué hace la IA generativa?</legend>
+        <button type="button" data-action="wrong">Solo repite una regla fija</button>
+        <button type="button" data-action="right">Produce una respuesta nueva</button>
+      </fieldset>
+      <p id="feedback" role="status" aria-live="polite"></p>
+      <p id="result" role="status" class="hidden">Listo. Puedes cerrar el interactivo con el botón de la app.</p>
+    </main>
+  </div>
+  <script src="app.js" defer></script>
+</body>
+</html>

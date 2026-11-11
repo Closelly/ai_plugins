@@ -1,6 +1,6 @@
 # Arquitectura portable
 
-Este repositorio es la fuente única de **Closelly MCP App** (`closelly-ai-plugins`). El mismo árbol se instala en ChatGPT/Codex, Claude Code y GitHub Copilot CLI. El paquete es markdown, JSON y YAML. No hay scripts.
+Este repositorio es la fuente única de **Closelly MCP App** (`closelly-ai-plugins`). El mismo árbol se instala en ChatGPT/Codex, Claude Code y GitHub Copilot CLI. El paquete contiene instrucciones Markdown, configuración JSON/YAML y ejemplos estáticos HTML/CSS/JavaScript con audio para los interactivos.
 
 ## Identidad
 
@@ -8,7 +8,7 @@ Este repositorio es la fuente única de **Closelly MCP App** (`closelly-ai-plugi
 | --- | --- |
 | Nombre visible | Closelly MCP App |
 | Identificador | `closelly-ai-plugins` |
-| Versión | `1.11.0` |
+| Versión | `1.12.0` |
 | Comandos | `/closelly`, `/LENA` |
 | MCP Business | `https://auth.closelly.com/mcp/business` (OAuth, skill `mcp-business`) |
 
@@ -37,6 +37,13 @@ Alinea `name`, `version` y el display name **Closelly MCP App** en `plugin.json`
 │   │   ├── agents/openai.yaml
 │   │   ├── assets/
 │   │   └── references/authoring-flow.md
+│   ├── closelly-interactive/           # ZIP HTML; ejemplos horizontal y vertical
+│   │   ├── SKILL.md
+│   │   ├── assets/examples/
+│   │   └── references/examples.md
+│   ├── create-activities/              # formatos, tarjetas, Remotion y audio
+│   │   ├── SKILL.md
+│   │   └── references/
 │   └── instructional-design/          # brief / plan pedagógico → handoff create-courses
 │       ├── SKILL.md
 │       ├── agents/openai.yaml

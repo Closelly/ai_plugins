@@ -1,0 +1,100 @@
+* { box-sizing: border-box; }
+
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 100%;
+  color: #172033;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body { background: #e8eef5; }
+
+.viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* This box is the full authored canvas. Only its transform scales to the iframe. */
+.stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1600px;
+  height: 900px;
+  transform-origin: top left;
+  padding: 64px;
+  background: #fff;
+  border-radius: 24px;
+  font-size: 2rem;
+  line-height: 1.4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+}
+
+.screen {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+}
+
+.hidden { display: none; }
+
+h1, h2, p { margin: 0; }
+h1 { font-size: 4rem; line-height: 1.12; }
+h2 { font-size: 3rem; line-height: 1.2; }
+
+.eyebrow {
+  font-size: 1.5rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: #3d5a80;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+}
+
+article {
+  padding: 32px;
+  border: 2px solid #d5deea;
+  border-radius: 24px;
+  background: #f4f7fb;
+}
+
+article p { margin-top: 20px; }
+
+button {
+  min-height: 72px;
+  padding: 18px 32px;
+  border: 2px solid #1d4e89;
+  border-radius: 16px;
+  background: #fff;
+  color: #1d4e89;
+  font: inherit;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+button:focus-visible {
+  outline: 5px solid #df8a18;
+  outline-offset: 6px;
+}
+
+button:disabled { cursor: default; opacity: .7; }
+.primary { align-self: flex-start; background: #1d4e89; color: #fff; }
+.secondary { align-self: flex-start; }

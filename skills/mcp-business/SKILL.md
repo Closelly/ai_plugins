@@ -4,7 +4,7 @@ description: Playbook de Closelly MCP App (connector /mcp/business). Invoca con 
 license: MIT
 metadata:
   plugin_name: closelly-ai-plugins
-  plugin_version: "1.11.0"
+  plugin_version: "1.12.0"
   plugin_display_name: Closelly MCP App
   mcp_server: closelly-business
   mcp_url: https://auth.closelly.com/mcp/business
@@ -278,3 +278,7 @@ Ejemplos: [references/examples.md](references/examples.md).
 - `get_course_detail` existe en ambos, pero Business rechaza cursos de otro business (`Course not found`).
 - Export Business: `export_course_progress` / `export_business_progress` → `.json` en S3 + `download_url` (60 min). `export_course_progress` puede incluir chats LENA (`include_lena_conversations`); el texto de los mensajes y las respuestas crudas de evaluaciones requieren `mcp.clients.interactions.read`. Internal: `export_course_progress` / `export_business_progress` → mismo patrón S3; PII e interacciones incluidas sin scopes extra (ops).
 - Sin `json_config` administrativo.
+
+## Producción de actividades y recursos
+
+Para crear tarjetas, videos educativos con Remotion, audio y archivos de una actividad, usa [create-activities](../create-activities/SKILL.md). Para generar el ZIP de Interactivo Closelly, usa [closelly-interactive](../closelly-interactive/SKILL.md). La escritura y publicación de registros sigue el flujo de [create-courses](../create-courses/SKILL.md).

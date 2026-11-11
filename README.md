@@ -6,13 +6,13 @@ Fuente única, versionada y portable de **Closelly MCP App** para **ChatGPT/Code
 | --- | --- |
 | Nombre visible | Closelly MCP App |
 | Identificador | `closelly-ai-plugins` |
-| Versión | `1.11.0` |
+| Versión | `1.12.0` |
 | Comandos | `/closelly`, `/LENA` |
-| Skills | `skills/mcp-business` (consulta), `skills/create-courses` (autoría MCP), `skills/instructional-design` (diseño pedagógico) |
+| Skills | `skills/mcp-business` (consulta), `skills/create-courses` (autoría MCP), `skills/instructional-design` (diseño pedagógico), `skills/closelly-interactive` (ZIP HTML), `skills/create-activities` (recursos y formatos) |
 | Config | `plugin.json`, `mcp.json` (ChatGPT/Codex), `.mcp.json` (Claude Code), `config/*.json` |
 | MCP Business | `https://auth.closelly.com/mcp/business` (OAuth) |
 
-Este paquete contiene **markdown**, **JSON** y **YAML**. No incluye scripts ejecutables.
+Este paquete contiene instrucciones Markdown, configuración JSON/YAML y ejemplos estáticos HTML/CSS/JavaScript con audio para crear interactivos.
 
 ## Instalar desde GitHub
 
@@ -67,6 +67,16 @@ Diseñador instruccional amable de Closelly: entrevista, plan de micro-curso (45
 - Entregables pedagógicos (storyboard, slides, banco de preguntas, guion LENA) en el chat; payload MCP solo con campos del schema.
 - Dos confirmaciones humanas (brief y plan) antes de escribir.
 - Handoff a `create-courses` para `create_course` / secciones / actividades / validar / publicar.
+
+## Interactivos (`closelly-interactive`)
+
+Crea un ZIP HTML para **Interactivo Closelly**, con una única orientación fija: horizontal 1600×900 o vertical 900×1600. Incluye el mismo código y audio de los dos ejemplos del backend, copiados del commit del PR #1034 y disponibles en `skills/closelly-interactive/assets/examples/`. [Procedencia y uso](skills/closelly-interactive/references/examples.md).
+
+## Crear actividades y recursos (`create-activities`)
+
+Guía para producir archivos y preparar actividades, con [formatos por tipo](skills/create-activities/references/activity-formats.md): tarjetas PNG/SVG, video, MP3, documentos, preguntas, evidencias e interactivos. Distingue requisitos del producto de recomendaciones de diseño.
+
+Los videos educativos se producen con **Remotion**, usando paleta/diseño del usuario, voz en off generada por el mismo agente con la capacidad de audio disponible y subtítulos sincronizados. Incluye una selección investigada de plantillas y estilos oficiales con métricas de adopción fechadas. La persistencia MCP continúa en `create-courses`.
 
 ## Release
 

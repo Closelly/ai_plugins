@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IA tradicional y generativa</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="viewport">
+    <main class="stage">
+      <section class="screen" data-screen="intro">
+        <p class="eyebrow">Interactivo</p>
+        <h1>IA tradicional y generativa</h1>
+        <p id="greeting" class="lead"></p>
+        <p>La IA tradicional sigue reglas escritas. La generativa produce una respuesta nueva a partir de lo que aprendió.</p>
+        <button type="button" class="primary" data-action="begin">Comenzar</button>
+      </section>
+      <section class="screen hidden" data-screen="compare">
+        <h1>Compara las dos</h1>
+        <div class="cards">
+          <article>
+            <h2>Tradicional</h2>
+            <p>Aplica una regla conocida. Si la regla no existe, no inventa una salida.</p>
+          </article>
+          <article>
+            <h2>Generativa</h2>
+            <p>Redacta una respuesta nueva. Hay que revisar si esa respuesta es correcta.</p>
+          </article>
+        </div>
+        <button type="button" class="primary" data-action="compare">Registrar la comparación</button>
+      </section>
+      <section class="screen hidden" data-screen="close">
+        <h1>Siguiente paso</h1>
+        <p>La siguiente parte está en construcción.</p>
+        <button type="button" class="secondary" data-action="audio">Escuchar la pista</button>
+        <audio id="clip" preload="none" src="audio/click.wav"></audio>
+        <button type="button" class="primary" data-action="finish">Terminar</button>
+      </section>
+    </main>
+  </div>
+  <script src="app.js" defer></script>
+</body>
+</html>
